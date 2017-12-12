@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Assignment</string>
+
+    <string name="bulleted_list">
+        <li>Construction began 1873</li>\n
+        <li>Architect, Alfred Waterhouse</li>\n
+        <li>Doors opened, 18th April 1881</li>\n
+        <li>More than 80 million specimens</li>\n
+        <li>More than 5 millions visitors annually</li>
+    </string>
 </resources>
