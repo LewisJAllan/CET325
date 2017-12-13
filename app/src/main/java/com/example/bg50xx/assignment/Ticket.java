@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * Created by bg50xx on 12/12/2017.
@@ -12,10 +13,14 @@ import android.view.MenuItem;
 
 public class Ticket extends AppCompatActivity {
 
+    TextView txtAdult, txtStudent, txtChild;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
+
+        txtAdult = (TextView) findViewById(R.id.txtAdult);
     }
 
     @Override
