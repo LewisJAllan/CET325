@@ -1,6 +1,8 @@
 package com.example.bg50xx.assignment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +26,11 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
 
     TextView txtAdult, txtStudent, txtChild;
     double adult, child;
-    String currentRate, alternateRate;
     DecimalFormat df;
     Button btnGBP,btnEuro;
     Currency cur;
+    SharedPreferences myPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +46,36 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         btnEuro.setOnClickListener(this);
         adult = 10.00;
         child = 5.00;
-        GBP(adult,child);
-        currentRate = "GBP";
-        alternateRate = "EUR";
-        df = new DecimalFormat("0.00");
-        btnGBP.setVisibility(View.INVISIBLE);
 
         JSONCurrencyTask task = new JSONCurrencyTask();
         task.execute(new String[]{""});
+        Thread thread = new Thread();
+        try {
+            thread.run();
+            thread.sleep(1500);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("pref", String.valueOf(cur.getRate()));
+        loadPreferences();
+
+    }
+
+    public void loadPreferences(){
+        myPreferences = getPreferences(Context.MODE_PRIVATE);
+        String Pref = myPreferences.getString("Currency", "");
+        Log.d("pref", Pref);
+
+        if(Pref.equals("GBP")){
+            GBP(adult, child);
+        }
+        else if(Pref.equals("EUR")){
+            EUR(cur.getRate());
+        }
+        else {
+            GBP(adult, child);
+        }
     }
 
     @Override
@@ -64,6 +89,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         txtAdult.setText(df.format(adult));
         txtStudent.setText(df.format((adult*0.7)));
         txtChild.setText(df.format(child));
+        btnGBP.setVisibility(View.INVISIBLE);
+        btnEuro.setVisibility((View.VISIBLE));
     }
 
     public void EUR(float rate){
@@ -71,6 +98,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         txtAdult.setText(df.format((adult*rate)));
         txtStudent.setText(df.format(((adult*rate)*0.7)));
         txtChild.setText(df.format((child*rate)));
+        btnGBP.setVisibility(View.VISIBLE);
+        btnEuro.setVisibility((View.INVISIBLE));
     }
 
 
@@ -100,13 +129,15 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
 
         if (id == R.id.btnGBP) {
             GBP(adult, child);
-            btnGBP.setVisibility(View.INVISIBLE);
-            btnEuro.setVisibility((View.VISIBLE));
+            editor = myPreferences.edit();
+            editor.putString("Currency", "GBP");
+            editor.commit();
         }
         if (id == R.id.btnEuro) {
             EUR(cur.getRate());
-            btnGBP.setVisibility(View.VISIBLE);
-            btnEuro.setVisibility((View.INVISIBLE));
+            editor = myPreferences.edit();
+            editor.putString("Currency", "EUR");
+            editor.commit();
         }
     }
 

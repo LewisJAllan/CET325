@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Assignment</string>
+    <string name="Ticket">Ticket</string>
+    <string name="Home">Home</string>
 
     <string name="bulleted_list">
         <li>Construction began 1873</li>\n

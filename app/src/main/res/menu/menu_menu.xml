@@ -5,12 +5,12 @@
     tools:context=".MainActivity">
 
     <item android:id="@+id/action_home"
-        android:title="Ticket"
+        android:title="@string/Home"
         android:icon="@drawable/home"
         android:logo="@drawable/home"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/action_ticket"
-        android:title="Ticket"
+        android:title="@string/Ticket"
         android:icon="@drawable/ticket"
         android:logo="@drawable/ticket"
         app:showAsAction="ifRoom" />
