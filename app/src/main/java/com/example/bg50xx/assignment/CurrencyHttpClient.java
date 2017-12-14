@@ -20,13 +20,25 @@ public class CurrencyHttpClient {
         InputStream is = null;
         String urlString = "";
 
+        try {
+            // create URL for specified city and metric units (Celsius)
+            urlString = BASE_URL;
+            Log.d("urlString",urlString);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         try {
             con = (HttpURLConnection) (new URL(urlString)).openConnection();
             con.setRequestMethod("GET");
+            // con.setDoInput(true);
+            // con.setDoOutput(true);
             con.connect();
 
             int response = con.getResponseCode();
+            Log.d("test",Integer.toString(response));
             if (response == HttpURLConnection.HTTP_OK) {
                 // Let's read the response
                 StringBuilder buffer = new StringBuilder();

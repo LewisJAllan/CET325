@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -48,6 +49,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         df = new DecimalFormat("0.00");
         btnGBP.setVisibility(View.INVISIBLE);
 
+        JSONCurrencyTask task = new JSONCurrencyTask();
+        task.execute(new String[]{""});
     }
 
     @Override
@@ -57,17 +60,17 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void GBP(double adult, double child){
-        df = new DecimalFormat("0.00");
-        txtAdult.setText("£" + df.format(adult));
-        txtStudent.setText("£" + df.format((adult*0.7)));
-        txtChild.setText("£" + df.format(child));
+        df = new DecimalFormat("'£'0.00");
+        txtAdult.setText(df.format(adult));
+        txtStudent.setText(df.format((adult*0.7)));
+        txtChild.setText(df.format(child));
     }
 
     public void EUR(float rate){
-        df = new DecimalFormat("0.00");
-        txtAdult.setText("€" + df.format((adult*rate)));
-        txtStudent.setText("€" + df.format(((adult*rate)*0.7)));
-        txtChild.setText("€" + df.format((child*rate)));
+        df = new DecimalFormat("'€'0.00");
+        txtAdult.setText(df.format((adult*rate)));
+        txtStudent.setText(df.format(((adult*rate)*0.7)));
+        txtChild.setText(df.format((child*rate)));
     }
 
 
@@ -94,8 +97,6 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        JSONCurrencyTask task = new JSONCurrencyTask();
-        task.execute(new String[]{alternateRate});
 
         if (id == R.id.btnGBP) {
             GBP(adult, child);
@@ -118,7 +119,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
             String data = ((new CurrencyHttpClient()).getCurrencyData());
             if (data != null) {
                 try {
-                    cur = JSONCurrencyParser.getCurrency(data, alternateRate, currentRate);
+                    cur = JSONCurrencyParser.getCurrency(data);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -130,15 +131,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         @Override
         protected void onPostExecute(Currency cur) {
             super.onPostExecute(cur);
-            if (cur!=null) {
-
-                if (cur.getCurType()=="EUR"){
-                    EUR(cur.getRate());
-                }
-            }
-            else
-            {
-                GBP(adult, child);
+            if (cur ==null) {
+                Toast.makeText(getApplicationContext(),"Unable to retrieve data",Toast.LENGTH_LONG).show();
             }
         }
     }

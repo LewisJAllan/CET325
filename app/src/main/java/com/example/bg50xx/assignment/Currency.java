@@ -7,16 +7,8 @@ import java.io.Serializable;
  */
 
 public class Currency implements Serializable {
-    private String curType;
+
     private float rate;
-
-    public String getCurType() {
-        return curType;
-    }
-
-    public void setCurType(String curType) {
-        this.curType = curType;
-    }
 
     public float getRate() {
         return rate;

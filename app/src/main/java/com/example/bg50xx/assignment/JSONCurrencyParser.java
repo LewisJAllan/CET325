@@ -9,21 +9,26 @@ import org.json.JSONObject;
 
 public class JSONCurrencyParser {
 
-    public static Currency getCurrency(String data, String rate, String currency) throws JSONException {
+    public static Currency getCurrency(String data) throws JSONException {
         Currency cur = new Currency();
 
-        if(rate.equals(currency)){
-            cur.setCurType(rate);
-            cur.setRate(1);
-        }
-        else{
-            JSONObject Obj = new JSONObject(data);
-            JSONObject RObj = Obj.getJSONObject("rates");
-            String curRate = RObj.getString(rate);
-            cur.setCurType(rate);
-            cur.setRate(Float.parseFloat(String.valueOf(curRate)));
-        }
+        JSONObject Obj = new JSONObject(data);
+
+        JSONObject mainObj = getObject("rates", Obj);
+        cur.setRate(getFloat("EUR", mainObj));
+
         //Log.d(getCurrency(cur.toString()));
         return cur;
+    }
+
+    private static JSONObject getObject(String tagName, JSONObject jObj)  throws JSONException {
+        return jObj.getJSONObject(tagName);
+    }
+    private static String getString(String tagName, JSONObject jObj) throws JSONException {
+        return jObj.getString(tagName);
+    }
+
+    private static float  getFloat(String tagName, JSONObject jObj) throws JSONException {
+        return (float) jObj.getDouble(tagName);
     }
 }
