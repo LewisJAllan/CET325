@@ -134,7 +134,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return art;
     }
     // Get All Books
-    public List<Artwork> getAllBooks() {
+    public List<Artwork> getAllArt() {
         List<Artwork> arts = new LinkedList<Artwork>();
 
         // 1. build the query
