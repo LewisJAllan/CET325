@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +26,13 @@ import java.text.DecimalFormat;
 public class Ticket extends AppCompatActivity implements View.OnClickListener{
 
     TextView txtAdult, txtStudent, txtChild;
-    double adult, child;
+    double adult, child, discount;
     DecimalFormat df;
-    Button btnGBP,btnEuro;
+    Button btnGBP,btnEuro, btnPrice;
     Currency cur;
     SharedPreferences myPreferences;
     SharedPreferences.Editor editor;
+    EditText editAdult, editChild, editPass, editDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +42,19 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         txtAdult = (TextView) findViewById(R.id.txtAdult);
         txtStudent = (TextView) findViewById(R.id.txtStudent);
         txtChild = (TextView) findViewById(R.id.txtChild);
+        editAdult = (EditText) findViewById(R.id.editAdult);
+        editChild = (EditText) findViewById(R.id.editChild);
+        editPass = (EditText) findViewById(R.id.editPass);
+        editDiscount = (EditText) findViewById(R.id.editDiscount);
         btnGBP = (Button) findViewById(R.id.btnGBP);
         btnGBP.setOnClickListener(this);
         btnEuro = (Button) findViewById(R.id.btnEuro);
         btnEuro.setOnClickListener(this);
+        btnPrice = (Button) findViewById(R.id.btnPrice);
+        btnPrice.setOnClickListener(this);
         adult = 10.00;
         child = 5.00;
+        discount = 0.3;
 
         JSONCurrencyTask task = new JSONCurrencyTask();
         task.execute(new String[]{""});
@@ -87,7 +96,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     public void GBP(double adult, double child){
         df = new DecimalFormat("'£'0.00");
         txtAdult.setText(df.format(adult));
-        txtStudent.setText(df.format((adult*0.7)));
+        txtStudent.setText(df.format((adult*discount)));
         txtChild.setText(df.format(child));
         btnGBP.setVisibility(View.INVISIBLE);
         btnEuro.setVisibility((View.VISIBLE));
@@ -96,7 +105,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     public void EUR(float rate){
         df = new DecimalFormat("'€'0.00");
         txtAdult.setText(df.format((adult*rate)));
-        txtStudent.setText(df.format(((adult*rate)*0.7)));
+        txtStudent.setText(df.format(((adult*rate)*discount)));
         txtChild.setText(df.format((child*rate)));
         btnGBP.setVisibility(View.VISIBLE);
         btnEuro.setVisibility((View.INVISIBLE));
@@ -138,6 +147,17 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
             editor = myPreferences.edit();
             editor.putString("Currency", "EUR");
             editor.commit();
+        }
+        if (id == R.id.btnPrice) {
+            if(editPass.getText().toString().equals("admin")){
+                adult = Double.parseDouble(editAdult.getText().toString());
+                child = Double.parseDouble(editChild.getText().toString());
+                discount = (100-(Double.parseDouble(editDiscount.getText().toString())))/100;
+                GBP(adult,child);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Incorrect password" + editPass.getText().toString(),Toast.LENGTH_LONG).show();
+            }
         }
     }
 
