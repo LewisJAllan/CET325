@@ -8,8 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
@@ -22,6 +25,7 @@ import java.util.List;
 
 public class MasterView extends AppCompatActivity {
 
+    private CursorAdapter cursorAdapter;
     MySQLiteHelper db;
     private ImageView image;
 
@@ -30,6 +34,18 @@ public class MasterView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_masterview);
 
+        ListView list = (ListView) findViewById(android.R.id.list);
+        list.setAdapter(cursorAdapter);
+
+        getLoaderManager().initLoader(0, null, this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restartLoader();
+
+            }
+        });
     }
 
     @Override
