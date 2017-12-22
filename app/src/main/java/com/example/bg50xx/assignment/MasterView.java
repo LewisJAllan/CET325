@@ -37,15 +37,15 @@ public class MasterView extends AppCompatActivity {
         ListView list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
 
-        getLoaderManager().initLoader(0, null, this);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                restartLoader();
-
-            }
-        });
+//        getLoaderManager().initLoader(0, null, this);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                restartLoader();
+//
+//            }
+//        });
     }
 
     @Override
