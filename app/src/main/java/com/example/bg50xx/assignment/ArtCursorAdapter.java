@@ -33,19 +33,19 @@ public class ArtCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         String title = cursor.getString(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyTitle()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_TITLE));
         String author = cursor.getString(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyAuthor()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_AUTHOR));
         int year = cursor.getInt(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyYear()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_YEAR));
         String description = cursor.getString(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyDescription()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_DESCRIPTION));
         int room = cursor.getInt(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyRoom()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_ROOM));
         float rating = cursor.getFloat(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyRating()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_RATING));
         byte[] image = cursor.getBlob(
-                cursor.getColumnIndex(MySQLiteHelper.getKeyImage()));
+                cursor.getColumnIndex(MySQLiteHelper.KEY_IMAGE));
         ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
         Bitmap picture = BitmapFactory.decodeStream(imageStream);
         TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);

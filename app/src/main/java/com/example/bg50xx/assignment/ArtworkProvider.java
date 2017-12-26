@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by Lewis on 26/12/2017.
@@ -45,8 +46,8 @@ public class ArtworkProvider extends ContentProvider {
         Cursor cursor;
         switch (uriMatcher.match(uri)) {
             case ART:
-                cursor =  database.query(MySQLiteHelper.getDbTable(),MySQLiteHelper.getCOLUMNS(),
-                        s,null,null,null,MySQLiteHelper.getKeyTitle() +" ASC");
+                cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS,
+                        s,null,null,null,MySQLiteHelper.KEY_ID +" ASC");
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
@@ -72,7 +73,7 @@ public class ArtworkProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        long id = database.insert(MySQLiteHelper.getDbTable(),null,contentValues);
+        long id = database.insert(MySQLiteHelper.DB_TABLE,null,contentValues);
 
         if (id > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, id);
@@ -88,7 +89,7 @@ public class ArtworkProvider extends ContentProvider {
         int delCount = 0;
         switch (uriMatcher.match(uri)) {
             case ART:
-                delCount =  database.delete(MySQLiteHelper.getDbTable(),s,strings);
+                delCount =  database.delete(MySQLiteHelper.DB_TABLE,s,strings);
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
@@ -102,7 +103,7 @@ public class ArtworkProvider extends ContentProvider {
         int updCount = 0;
         switch (uriMatcher.match(uri)) {
             case ART:
-                updCount =  database.update(MySQLiteHelper.getDbTable(),contentValues,s,strings);
+                updCount =  database.update(MySQLiteHelper.DB_TABLE,contentValues,s,strings);
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);

@@ -24,6 +24,10 @@
             android:name=".Ticket"
             android:label="Assignment">
         </activity>
+        <activity
+            android:name=".MasterView"
+            android:label="Assignment">
+        </activity>
     </application>
 
 </manifest>

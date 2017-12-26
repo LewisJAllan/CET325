@@ -40,7 +40,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
     private CursorAdapter cursorAdapter;
     MySQLiteHelper db;
-    private ImageView image;
+    Artwork artwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 byte[] bitmapdata = stream.toByteArray();
                                 insertArt(title, author, year, description, room, rating, bitmapdata);
                                 restartLoader();
+                                artwork = new Artwork(title, author, description, room, year, bitmapdata, rating);
                             }
                         }).create()
                         .show();
@@ -100,13 +101,13 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata) {
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.getKeyTitle(),title);
-        values.put(MySQLiteHelper.getKeyAuthor(),author);
-        values.put(MySQLiteHelper.getKeyYear(),year);
-        values.put(MySQLiteHelper.getKeyDescription(),description);
-        values.put(MySQLiteHelper.getKeyRoom(),room);
-        values.put(MySQLiteHelper.getKeyRating(),rating);
-        values.put(MySQLiteHelper.getKeyImage(),bitmapdata);
+        values.put(MySQLiteHelper.KEY_TITLE,title);
+        values.put(MySQLiteHelper.KEY_AUTHOR,author);
+        values.put(MySQLiteHelper.KEY_YEAR,year);
+        values.put(MySQLiteHelper.KEY_DESCRIPTION,description);
+        values.put(MySQLiteHelper.KEY_ROOM,room);
+        values.put(MySQLiteHelper.KEY_RATING,rating);
+        values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
         Uri artUri  = getContentResolver().insert(ArtworkProvider.CONTENT_URI,values);
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
@@ -149,8 +150,8 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
 
         // add tracks
-        db.addArtwork(new Artwork("Test", "Lewis", "Test", 1, 1992, bitMapData, 5));
-        db.addArtwork(new Artwork("Test2", "Lewis", "Test2", 1, 2222, bitMapData, 3));
+        //db.addArtwork(new Artwork("Test", "Lewis", "Test", 1, 1992, bitMapData, 5));
+        //db.addArtwork(new Artwork("Test2", "Lewis", "Test2", 1, 2222, bitMapData, 3));
 
         // get all tracks
         List<Artwork> list = db.getAllArt();

@@ -17,65 +17,25 @@ import java.util.List;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "ArtworkDB";
-
-    public static String getDbTable() {
-        return DB_TABLE;
-    }
-
-    public static String getKeyId() {
-        return KEY_ID;
-    }
-
-    public static String getKeyTitle() {
-        return KEY_TITLE;
-    }
-
-    public static String getKeyAuthor() {
-        return KEY_AUTHOR;
-    }
-
-    public static String getKeyYear() {
-        return KEY_YEAR;
-    }
-
-    public static String getKeyDescription() {
-        return KEY_DESCRIPTION;
-    }
-
-    public static String getKeyRoom() {
-        return KEY_ROOM;
-    }
-
-    public static String getKeyImage() {
-        return KEY_IMAGE;
-    }
-
-    public static String getKeyRating() {
-        return KEY_RATING;
-    }
-
-    public static String[] getCOLUMNS() {
-        return COLUMNS;
-    }
+    public static final String DATABASE_NAME = "artwork.db";
 
     // Table Names
-    private static final String DB_TABLE = "artwork";
+    public static final String DB_TABLE = "artwork";
 
     // column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_AUTHOR = "author";
-    private static final String KEY_YEAR = "year";
-    private static final String KEY_DESCRIPTION = "description";
-    private static final String KEY_ROOM = "room";
-    private static final String KEY_IMAGE = "image_data";
-    private static final String KEY_RATING = "rating";
+    public static final String KEY_ID = "id";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_AUTHOR = "author";
+    public static final String KEY_YEAR = "year";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_ROOM = "room";
+    public static final String KEY_IMAGE = "image";
+    public static final String KEY_RATING = "rating";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_AUTHOR,KEY_YEAR,KEY_DESCRIPTION,KEY_ROOM,KEY_IMAGE,KEY_RATING};
+    public static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_AUTHOR, KEY_YEAR, KEY_DESCRIPTION, KEY_ROOM, KEY_IMAGE, KEY_RATING};
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -88,8 +48,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE = "CREATE TABLE " + DB_TABLE + "("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
-                "author TEXT, year INT, description TEXT, room INT "+
-                KEY_IMAGE + " BLOB, rating FLOAT);";
+                "author TEXT, year INT, description TEXT, room INT, image BLOB, "+
+                "rating FLOAT);";
 
         // creating table
         db.execSQL(CREATE_TABLE);
@@ -164,7 +124,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             art.setDescription(cursor.getString(4));
             art.setRoom(Integer.parseInt(cursor.getString(5)));
             art.setImage(cursor.getBlob(6));
-            art.setRating(Integer.parseInt(cursor.getString(7)));
+            art.setRating(Float.parseFloat(cursor.getString(7)));
 
             Log.d("getArt(" + id + ")", art.toString());
 
