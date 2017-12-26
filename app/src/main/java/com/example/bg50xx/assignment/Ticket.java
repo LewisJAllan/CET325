@@ -122,12 +122,11 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
-//            case R.id.subaction_green:
-//                rl.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
-//                return true;
-//            case R.id.action_user:
-//                createUserDialog();
-//                return true;
+            case R.id.action_gallery:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MasterView.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

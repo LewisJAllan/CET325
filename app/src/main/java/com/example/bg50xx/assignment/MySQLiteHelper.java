@@ -22,6 +22,46 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "ArtworkDB";
 
+    public static String getDbTable() {
+        return DB_TABLE;
+    }
+
+    public static String getKeyId() {
+        return KEY_ID;
+    }
+
+    public static String getKeyTitle() {
+        return KEY_TITLE;
+    }
+
+    public static String getKeyAuthor() {
+        return KEY_AUTHOR;
+    }
+
+    public static String getKeyYear() {
+        return KEY_YEAR;
+    }
+
+    public static String getKeyDescription() {
+        return KEY_DESCRIPTION;
+    }
+
+    public static String getKeyRoom() {
+        return KEY_ROOM;
+    }
+
+    public static String getKeyImage() {
+        return KEY_IMAGE;
+    }
+
+    public static String getKeyRating() {
+        return KEY_RATING;
+    }
+
+    public static String[] getCOLUMNS() {
+        return COLUMNS;
+    }
+
     // Table Names
     private static final String DB_TABLE = "artwork";
 
@@ -48,8 +88,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE = "CREATE TABLE " + DB_TABLE + "("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
-                "author TEXT, year TEXT, description TEXT, room TEXT "+
-                KEY_IMAGE + " BLOB, rating TEXT);";
+                "author TEXT, year INT, description TEXT, room INT "+
+                KEY_IMAGE + " BLOB, rating FLOAT);";
 
         // creating table
         db.execSQL(CREATE_TABLE);

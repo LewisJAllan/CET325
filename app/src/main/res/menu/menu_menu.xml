@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
+    <item
+        android:id="@+id/action_gallery"
+        android:orderInCategory="100"
+        android:title="Gallery"
+        app:showAsAction="never" />
     <item android:id="@+id/action_home"
         android:title="@string/Home"
         android:icon="@drawable/home"
