@@ -38,7 +38,7 @@ import java.util.List;
 
 public class MasterView extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private CursorAdapter cursorAdapter;
+    private CursorAdapter cursorAdapter = null;
     MySQLiteHelper db;
     Artwork artwork;
 
@@ -118,7 +118,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,null,null,null,null,null);
+        return new CursorLoader(this, ArtworkProvider.CONTENT_URI,null,null,null,null);
     }
 
     @Override

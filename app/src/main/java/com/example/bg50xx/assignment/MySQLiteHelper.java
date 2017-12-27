@@ -17,10 +17,10 @@ import java.util.List;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
     // Database Version
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    public static final String DATABASE_NAME = "artwork.db";
+    private static final String DATABASE_NAME = "artwork.db";
 
     // Table Names
     public static final String DB_TABLE = "artwork";
@@ -37,20 +37,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_AUTHOR, KEY_YEAR, KEY_DESCRIPTION, KEY_ROOM, KEY_IMAGE, KEY_RATING};
 
+    // Table create statement
+    private static final String CREATE_TABLE = "CREATE TABLE " +
+            DB_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            KEY_TITLE + " TEXT, "+
+            KEY_AUTHOR + " TEXT, " + KEY_YEAR + " INTEGER, " +
+            KEY_DESCRIPTION + " TEXT, " + KEY_ROOM + " INTEGER, " +
+            KEY_IMAGE + " BLOB, "+ KEY_RATING + " FLOAT)";
+
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        // Table create statement
-        String CREATE_TABLE = "CREATE TABLE " + DB_TABLE + "("+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, "+
-                "author TEXT, year INT, description TEXT, room INT, image BLOB, "+
-                "rating FLOAT);";
-
         // creating table
         db.execSQL(CREATE_TABLE);
     }

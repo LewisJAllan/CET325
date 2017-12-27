@@ -47,7 +47,7 @@ public class ArtworkProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ART:
                 cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS,
-                        s,null,null,null,MySQLiteHelper.KEY_ID +" ASC");
+                        s,null,null,null,MySQLiteHelper.KEY_ID + " ASC");
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
@@ -64,7 +64,7 @@ public class ArtworkProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ART:
                 // return the mime type of the Content Provider
-                return "vnd.android.cursor.dir/contacts";
+                return "vnd.android.cursor.dir/artwork";
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
         }
