@@ -57,8 +57,8 @@ public class ArtCursorAdapter extends CursorAdapter {
         ImageView pic = (ImageView) view.findViewById(R.id.imageDocIcon);
         txtTitle.setText(title);
         txtAuthor.setText(author);
-        txtYear.setText(year);
-        txtRoom.setText(room);
+        txtYear.setText(String.valueOf(year));
+        txtRoom.setText(String.valueOf(room));
         txtDescription.setText(description);
         ratingbar.setRating(rating);
         pic.setImageBitmap(picture);

@@ -40,7 +40,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
     private CursorAdapter cursorAdapter = null;
     MySQLiteHelper db;
-    Artwork artwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,17 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         cursorAdapter = new ArtCursorAdapter(this,null,0);
         ListView list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
+
+        //db = new MySQLiteHelper(this);
+
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nhm);
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//        byte[] bitMapData = stream.toByteArray();
+//
+//
+//        // add art
+//        insertArt("Test", "Lewis", 1992, "Test", 1, 5, bitMapData);
 
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -91,7 +101,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 byte[] bitmapdata = stream.toByteArray();
                                 insertArt(title, author, year, description, room, rating, bitmapdata);
                                 restartLoader();
-                                artwork = new Artwork(title, author, description, room, year, bitmapdata, rating);
                             }
                         }).create()
                         .show();
@@ -141,23 +150,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
         super.onStart();
 
-        db = new MySQLiteHelper(this);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nhm);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] bitMapData = stream.toByteArray();
-
-
-        // add tracks
-        db.addArtwork(new Artwork("Test", "Lewis", "Test", 1, 1992, bitMapData, 5));
-        db.addArtwork(new Artwork("Test2", "Lewis", "Test2", 1, 2222, bitMapData, 3));
-
-        // get all tracks
-        List<Artwork> list = db.getAllArt();
-
-        // get all tracks
-        db.getAllArt();
 
     }
 }
