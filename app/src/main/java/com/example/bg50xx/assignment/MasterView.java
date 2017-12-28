@@ -52,17 +52,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list.setAdapter(cursorAdapter);
 
 
-        //db = new MySQLiteHelper(this);
-
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nhm);
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//        byte[] bitMapData = stream.toByteArray();
-//
-//
-//        // add art
-//        insertArt("Test", "Lewis", 1992, "Test", 1, 5, bitMapData);
-
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -103,34 +92,16 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bitmapdata = stream.toByteArray();
-                                insertArt(title, author, year, description, room, rating, bitmapdata);
+                                insertArt(title, author, year, description, room, rating, bitmapdata, 1);
                                 restartLoader();
                             }
                         }).create()
                         .show();
             }
         });
-//        list = (ListView) findViewById(android.R.id.list);
-//        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this);
-//        SQLiteDatabase database = mySQLiteHelper.getReadableDatabase();
-//        String databasename = MySQLiteHelper.DB_TABLE;
-//        String[] columns = {"*"};
-//        String where = null;
-//        String[] selectargs = null;
-//        String groupby = null;
-//        String having = null;
-//        String orderby = null;
-//        Cursor cursor = database.query(databasename, columns, where, selectargs, groupby, having, orderby);
-//        if(cursor.getCount()>0){
-//            this.cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
-//            list.setAdapter(this.cursorAdapter);
-//        }
-//        else{
-//            list.setAdapter(null);
-        //}
     }
 
-    private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata) {
+    private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.KEY_TITLE,title);
         values.put(MySQLiteHelper.KEY_AUTHOR,author);
@@ -139,7 +110,8 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         values.put(MySQLiteHelper.KEY_ROOM,room);
         values.put(MySQLiteHelper.KEY_RATING,rating);
         values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
-        Uri artUri  = getContentResolver().insert(ArtworkProvider.CONTENT_URI,values);
+        values.put(MySQLiteHelper.KEY_EDIT, edit);
+        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values);
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
 
@@ -165,14 +137,5 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
         cursorAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onStart(){
-
-        super.onStart();
-
-
-
     }
 }
