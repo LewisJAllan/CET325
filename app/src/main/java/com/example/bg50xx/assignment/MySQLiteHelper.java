@@ -34,8 +34,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String KEY_ROOM = "room";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_RATING = "rating";
+    public static final String KEY_EDIT = "edit";
 
-    public static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_AUTHOR, KEY_YEAR, KEY_DESCRIPTION, KEY_ROOM, KEY_IMAGE, KEY_RATING};
+    public static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_AUTHOR, KEY_YEAR, KEY_DESCRIPTION, KEY_ROOM, KEY_IMAGE, KEY_RATING, KEY_EDIT};
 
     // Table create statement
     private static final String CREATE_TABLE = "CREATE TABLE " +
@@ -43,7 +44,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             KEY_TITLE + " TEXT, "+
             KEY_AUTHOR + " TEXT, " + KEY_YEAR + " INTEGER, " +
             KEY_DESCRIPTION + " TEXT, " + KEY_ROOM + " INTEGER, " +
-            KEY_IMAGE + " BLOB, "+ KEY_RATING + " FLOAT)";
+            KEY_IMAGE + " BLOB, "+ KEY_RATING + " FLOAT, " + KEY_EDIT + " INTEGER DEFAULT 1)";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

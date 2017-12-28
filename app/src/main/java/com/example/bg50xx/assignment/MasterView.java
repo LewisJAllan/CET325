@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Loader;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,15 +40,17 @@ import java.util.List;
 public class MasterView extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private CursorAdapter cursorAdapter = null;
-    MySQLiteHelper db;
+    //MySQLiteHelper db;
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_masterview);
         cursorAdapter = new ArtCursorAdapter(this,null,0);
-        ListView list = (ListView) findViewById(android.R.id.list);
+        list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
+
 
         //db = new MySQLiteHelper(this);
 
@@ -96,6 +99,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 Drawable drawable = getResources().getDrawable(getResources()
                                         .getIdentifier("defaultpic", "drawable", getPackageName()));
                                 Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 600, 400, false);
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bitmapdata = stream.toByteArray();
@@ -106,6 +110,24 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                         .show();
             }
         });
+//        list = (ListView) findViewById(android.R.id.list);
+//        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this);
+//        SQLiteDatabase database = mySQLiteHelper.getReadableDatabase();
+//        String databasename = MySQLiteHelper.DB_TABLE;
+//        String[] columns = {"*"};
+//        String where = null;
+//        String[] selectargs = null;
+//        String groupby = null;
+//        String having = null;
+//        String orderby = null;
+//        Cursor cursor = database.query(databasename, columns, where, selectargs, groupby, having, orderby);
+//        if(cursor.getCount()>0){
+//            this.cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+//            list.setAdapter(this.cursorAdapter);
+//        }
+//        else{
+//            list.setAdapter(null);
+        //}
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata) {
@@ -131,14 +153,14 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         cursorAdapter.swapCursor(cursor);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
