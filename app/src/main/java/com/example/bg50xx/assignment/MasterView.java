@@ -150,8 +150,8 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
 
         // add tracks
-        //db.addArtwork(new Artwork("Test", "Lewis", "Test", 1, 1992, bitMapData, 5));
-        //db.addArtwork(new Artwork("Test2", "Lewis", "Test2", 1, 2222, bitMapData, 3));
+        db.addArtwork(new Artwork("Test", "Lewis", "Test", 1, 1992, bitMapData, 5));
+        db.addArtwork(new Artwork("Test2", "Lewis", "Test2", 1, 2222, bitMapData, 3));
 
         // get all tracks
         List<Artwork> list = db.getAllArt();

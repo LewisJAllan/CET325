@@ -26,7 +26,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String DB_TABLE = "artwork";
 
     // column names
-    public static final String KEY_ID = "id";
+    public static final String KEY_ID = "_id";
     public static final String KEY_TITLE = "title";
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_YEAR = "year";
@@ -39,7 +39,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // Table create statement
     private static final String CREATE_TABLE = "CREATE TABLE " +
-            DB_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            DB_TABLE + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             KEY_TITLE + " TEXT, "+
             KEY_AUTHOR + " TEXT, " + KEY_YEAR + " INTEGER, " +
             KEY_DESCRIPTION + " TEXT, " + KEY_ROOM + " INTEGER, " +
