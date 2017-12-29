@@ -74,7 +74,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                 // set dialog message
 
                 alertDialogBuilder
-                        .setCancelable(false)
+                        .setNegativeButton(android.R.string.cancel, null)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // get user input and set it to result

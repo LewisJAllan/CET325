@@ -38,8 +38,8 @@ public class ArtCursorAdapter extends CursorAdapter {
                 cursor.getColumnIndex(MySQLiteHelper.KEY_AUTHOR));
         int year = cursor.getInt(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_YEAR));
-        String description = cursor.getString(
-                cursor.getColumnIndex(MySQLiteHelper.KEY_DESCRIPTION));
+//        String description = cursor.getString(
+//                cursor.getColumnIndex(MySQLiteHelper.KEY_DESCRIPTION));
         int room = cursor.getInt(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_ROOM));
         float rating = cursor.getFloat(
@@ -52,14 +52,14 @@ public class ArtCursorAdapter extends CursorAdapter {
         TextView txtAuthor = (TextView) view.findViewById(R.id.txtAuthor);
         TextView txtYear = (TextView) view.findViewById(R.id.txtYear);
         TextView txtRoom = (TextView) view.findViewById(R.id.txtRoom);
-        TextView txtDescription = (TextView) view.findViewById(R.id.txtDescription);
+        //TextView txtDescription = (TextView) view.findViewById(R.id.txtDescription);
         RatingBar ratingbar = (RatingBar) view.findViewById(R.id.ratingBar);
         ImageView pic = (ImageView) view.findViewById(R.id.imageDocIcon);
         txtTitle.setText(title);
         txtAuthor.setText(author);
         txtYear.setText(String.valueOf(year));
         txtRoom.setText(String.valueOf(room));
-        txtDescription.setText(description);
+        //txtDescription.setText(description);
         ratingbar.setRating(rating);
         pic.setImageBitmap(picture);
     }

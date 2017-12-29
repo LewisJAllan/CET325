@@ -7,8 +7,12 @@
 
     <ImageView
         android:id="@+id/imageDocIcon"
-        android:layout_width="200dp"
-        android:layout_height="200dp" />
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/ratingBar"
+        android:layout_alignBottom="@+id/textView15" />
 
     <TextView
         android:id="@+id/txt1"
@@ -18,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageDocIcon"
         android:text="Title"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -29,7 +33,7 @@
         android:layout_below="@+id/txt1"
         android:layout_toEndOf="@+id/imageDocIcon"
         android:text="title"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textView8"
@@ -39,87 +43,64 @@
         android:layout_below="@+id/txtTitle"
         android:layout_toEndOf="@+id/imageDocIcon"
         android:text="Author"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="author"
-        android:textSize="18sp"
-        android:layout_below="@+id/textView8"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/imageDocIcon" />
+        android:layout_below="@+id/textView8"
+        android:layout_toEndOf="@+id/imageDocIcon"
+        android:text="author"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/txtAuthor"
-        android:layout_toEndOf="@+id/imageDocIcon"
         android:text="Year"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/txtAuthor"
+        android:layout_toEndOf="@+id/imageDocIcon" />
 
     <TextView
         android:id="@+id/txtYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView13"
         android:text="year"
-        android:textSize="18sp"
-        android:layout_toEndOf="@+id/imageDocIcon" />
+        android:textSize="14sp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView13"
+        android:layout_alignBottom="@+id/textView13" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/txtYear"
         android:layout_toEndOf="@+id/imageDocIcon"
         android:text="Room"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageDocIcon"
-        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/textView15"
         android:text="room"
-        android:textSize="18sp"
-        android:layout_toEndOf="@+id/imageDocIcon" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageDocIcon"
-        android:text="Description"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txtDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView17"
-        android:text="TextView"
-        android:textSize="18sp"
-        android:layout_alignParentStart="true" />
+        android:layout_toEndOf="@+id/textView15" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtDescription" />
+        android:layout_below="@+id/imageDocIcon"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
