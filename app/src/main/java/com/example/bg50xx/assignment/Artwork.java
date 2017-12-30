@@ -18,6 +18,7 @@ public class Artwork {
     private int year;
     private byte[] image;
     private float rating;
+    private int edit;
 
     public String getAuthor() {return author;}
     public void setAuthor(String author) {this.author = author;}
@@ -33,13 +34,15 @@ public class Artwork {
     public void setImage(byte[] image) {this.image = image; }
     public float getRating() {return rating;}
     public void setRating(float rating) {this.rating = rating;}
+    public int getEdit() {return edit;}
+    public void setEdit(int edit) {this.room = edit;}
 
     //empty constructor with no action taken
     public Artwork(){
 
     }
     //constructors, with title and author passed in as variables
-    public Artwork(String title, String author, String description, int room, int year, byte[] image, float rating){
+    public Artwork(String title, String author, String description, int room, int year, byte[] image, float rating, int edit){
         //super();
         setTitle(title);
         setAuthor(author);
@@ -48,6 +51,7 @@ public class Artwork {
         setYear(year);
         setImage(image);
         setRating(rating);
+        setEdit(edit);
     }
 
     //getters & setters

@@ -40,8 +40,10 @@ import java.util.List;
 public class MasterView extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private CursorAdapter cursorAdapter = null;
-    //MySQLiteHelper db;
+    MySQLiteHelper db;
     ListView list;
+    List<Artwork> Ranked;
+    List<Artwork> Unranked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,16 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                         .show();
             }
         });
+        db = new MySQLiteHelper(this);
+        List<Artwork> AllArt = db.getAllArt();
+        for(Artwork art : AllArt){
+            if(art.getRating() > 0){
+               Ranked.add(art);
+            }
+            else{
+                Unranked.add(art);
+            }
+        }
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
@@ -111,7 +123,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         values.put(MySQLiteHelper.KEY_RATING,rating);
         values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
         values.put(MySQLiteHelper.KEY_EDIT, edit);
-        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values);
+        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values); //This is the insert into DB_TABLE line from ArtworkProvider
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
 
