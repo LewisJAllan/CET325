@@ -68,7 +68,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------
     //CRUD Operations - Create (add), Read (get), Update, Delete
 
-    public void addArt(Artwork art){
+    void addArt(Artwork art){
 
         Log.d("addArt", art.toString());
         // 1. get reference to writable DB
@@ -149,7 +149,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
 
         // 3. go over each row, build art and add it to list
-        Artwork a = null;
+        Artwork a;
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 a = new Artwork();
@@ -259,6 +259,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
         // 5. return track
         return art;
+    }
+
+    // Getting artwork Count
+    public int getArtworkCount() {
+        String countQuery = "SELECT  * FROM " + DB_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+
+        // return count
+        return cursor.getCount();
     }
 
 }

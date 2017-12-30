@@ -42,7 +42,7 @@ public class Artwork {
 
     }
     //constructors, with title and author passed in as variables
-    public Artwork(String title, String author, String description, int room, int year, byte[] image, float rating, int edit){
+    public Artwork(String title, String author, String description,  int year, int room, byte[] image, float rating, int edit){
         //super();
         setTitle(title);
         setAuthor(author);

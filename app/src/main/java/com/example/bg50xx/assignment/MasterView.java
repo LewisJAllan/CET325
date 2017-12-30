@@ -44,6 +44,9 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     ListView list;
     List<Artwork> Ranked;
     List<Artwork> Unranked;
+    SQLiteDatabase database;
+    Cursor cursor;
+    Artwork art;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,30 +104,39 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                         .show();
             }
         });
-        db = new MySQLiteHelper(this);
-        List<Artwork> AllArt = db.getAllArt();
-        for(Artwork art : AllArt){
-            if(art.getRating() > 0){
-               Ranked.add(art);
-            }
-            else{
-                Unranked.add(art);
-            }
-        }
+
+//        cursor = database.query(MySQLiteHelper.DB_TABLE, MySQLiteHelper.COLUMNS, MySQLiteHelper.KEY_RATING + " > 0", null, null, null, null);
+//        db = new MySQLiteHelper(this);
+//        List<Artwork> AllArt = db.getAllArt();
+//        for(Artwork art : AllArt){
+//            if(art.getRating() > 0){
+//                cursor.moveToFirst();
+//                Ranked.add(art);
+//            }
+//            else{
+//                Unranked.add(art);
+//                Toast.makeText(this,"Testing..." + art.toString(),Toast.LENGTH_LONG).show();
+//            }
+//        }
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.KEY_TITLE,title);
-        values.put(MySQLiteHelper.KEY_AUTHOR,author);
-        values.put(MySQLiteHelper.KEY_YEAR,year);
-        values.put(MySQLiteHelper.KEY_DESCRIPTION,description);
-        values.put(MySQLiteHelper.KEY_ROOM,room);
-        values.put(MySQLiteHelper.KEY_RATING,rating);
-        values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
-        values.put(MySQLiteHelper.KEY_EDIT, edit);
-        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values); //This is the insert into DB_TABLE line from ArtworkProvider
+        art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
+        //Toast.makeText(this,"object Artwork " + art.toString(),Toast.LENGTH_LONG).show();
+        db.addArt(art);
+
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
+//        ContentValues values = new ContentValues();
+//        values.put(MySQLiteHelper.KEY_TITLE,title);
+//        values.put(MySQLiteHelper.KEY_AUTHOR,author);
+//        values.put(MySQLiteHelper.KEY_YEAR,year);
+//        values.put(MySQLiteHelper.KEY_DESCRIPTION,description);
+//        values.put(MySQLiteHelper.KEY_ROOM,room);
+//        values.put(MySQLiteHelper.KEY_RATING,rating);
+//        values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
+//        values.put(MySQLiteHelper.KEY_EDIT, edit);
+//        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values); //This is the insert into DB_TABLE line from ArtworkProvider
+//        Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
 
     private void restartLoader() {

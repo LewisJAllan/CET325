@@ -16,11 +16,13 @@ import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    Artwork art;
+    MySQLiteHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new MySQLiteHelper(this);
 
         if(getContentResolver().query(ArtworkProvider.CONTENT_URI, null, null, null, null).getCount() == 0){
             Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
@@ -92,16 +94,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.KEY_TITLE,title);
-        values.put(MySQLiteHelper.KEY_AUTHOR,author);
-        values.put(MySQLiteHelper.KEY_YEAR,year);
-        values.put(MySQLiteHelper.KEY_DESCRIPTION,description);
-        values.put(MySQLiteHelper.KEY_ROOM,room);
-        values.put(MySQLiteHelper.KEY_RATING,rating);
-        values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
-        values.put(MySQLiteHelper.KEY_EDIT, edit);
-        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values);
+        art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
+        //Toast.makeText(this,"object Artwork " + art.toString(),Toast.LENGTH_LONG).show();
+        db.addArt(art);
+
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
     @Override
