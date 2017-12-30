@@ -44,6 +44,7 @@ public class ArtworkProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
         Cursor cursor;
+        Log.d("uri", uri.toString());
         switch (uriMatcher.match(uri)) {
             case ART:
                 cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS,

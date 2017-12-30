@@ -49,6 +49,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     SQLiteDatabase database;
     Cursor cursor;
     Artwork art;
+    int selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
         db = new MySQLiteHelper(this);
+        selected = 1;
 
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -124,29 +126,14 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
             Toast.makeText(this,"No Unranked Data.",Toast.LENGTH_SHORT).show();
             Unranked = null;
         }
-        Toast.makeText(this,all.toString(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,Unranked.toString(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,Ranked.toString(),Toast.LENGTH_SHORT).show();
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
-        //Toast.makeText(this,"object Artwork " + art.toString(),Toast.LENGTH_LONG).show();
         db.addArt(art);
-
         Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
-//        ContentValues values = new ContentValues();
-//        values.put(MySQLiteHelper.KEY_TITLE,title);
-//        values.put(MySQLiteHelper.KEY_AUTHOR,author);
-//        values.put(MySQLiteHelper.KEY_YEAR,year);
-//        values.put(MySQLiteHelper.KEY_DESCRIPTION,description);
-//        values.put(MySQLiteHelper.KEY_ROOM,room);
-//        values.put(MySQLiteHelper.KEY_RATING,rating);
-//        values.put(MySQLiteHelper.KEY_IMAGE,bitmapdata);
-//        values.put(MySQLiteHelper.KEY_EDIT, edit);
-//        getContentResolver().insert(ArtworkProvider.CONTENT_URI,values); //This is the insert into DB_TABLE line from ArtworkProvider
-//        Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
+
 
     private void restartLoader() {
         getLoaderManager().restartLoader(0,null,this);
