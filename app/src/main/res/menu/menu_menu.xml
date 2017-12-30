@@ -7,7 +7,12 @@
     <item
         android:id="@+id/action_gallery"
         android:orderInCategory="100"
-        android:title="Gallery"
+        android:title="All Exhibits"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_ranked"
+        android:orderInCategory="100"
+        android:title="Ranked Exhibits"
         app:showAsAction="never" />
     <item android:id="@+id/action_home"
         android:title="@string/Home"

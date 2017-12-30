@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +18,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CursorAdapter;
@@ -60,6 +64,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list.setAdapter(cursorAdapter);
         db = new MySQLiteHelper(this);
         selected = 1;
+
 
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -126,6 +131,61 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
             Toast.makeText(this,"No Unranked Data.",Toast.LENGTH_SHORT).show();
             Unranked = null;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent;
+
+        switch (item.getItemId()){
+            case R.id.action_ticket:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), Ticket.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            case R.id.action_home:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            case R.id.action_ranked:
+                String[] zero = new String[]{"0"};
+                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " > ?",zero,null, null);
+                Log.d("cursor", cursor.toString());
+                int data = cursor.getCount();
+
+                // make sure database is not empty, otherwise set the adapter to null
+                if(data == 0 || data < 1){
+                    list.setAdapter(null);
+                } else {
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+            case R.id.action_gallery:
+                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,null,null,null, null);
+                Log.d("cursor", cursor.toString());
+                int alld = cursor.getCount();
+
+                // make sure database is not empty, otherwise set the adapter to null
+                if(alld== 0 || alld < 1){
+                    list.setAdapter(null);
+                } else {
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+//            case R.id.action_user:
+//                createUserDialog();
+//                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {

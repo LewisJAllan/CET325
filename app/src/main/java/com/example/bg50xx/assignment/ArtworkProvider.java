@@ -24,7 +24,6 @@ public class ArtworkProvider extends ContentProvider {
 
     private static final int ART = 1;
     private static final int ART_ID = 2;
-
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         uriMatcher.addURI(AUTHORITY,BASE_PATH, ART);
@@ -42,13 +41,13 @@ public class ArtworkProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionargs, String sortorder) {
         Cursor cursor;
         Log.d("uri", uri.toString());
         switch (uriMatcher.match(uri)) {
             case ART:
-                cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS,
-                        s,null,null,null,MySQLiteHelper.KEY_ID + " ASC");
+                cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS, selection,selectionargs,
+                        null,null,MySQLiteHelper.KEY_ID + " ASC");
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
