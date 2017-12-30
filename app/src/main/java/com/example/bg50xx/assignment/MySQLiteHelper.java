@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -220,6 +221,89 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         Log.d("deleteArt", art.toString());
 
+    }
+
+    public List<Artwork> getRanked(){
+        List<Artwork> art = new LinkedList<Artwork>();
+        // 1. get reference to readable DB
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // 2. build query
+        Cursor cursor =
+                db.query(DB_TABLE, // a. table
+                        COLUMNS, // b. column names
+                        KEY_RATING+ " > ?", // c. selections
+                        new String[] { "0" }, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+        // 3. go over each row, build art and add it to list
+        Artwork a;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                a = new Artwork();
+                a.id = Integer.parseInt(cursor.getString(0));
+                a.setTitle(cursor.getString(1));
+                a.setAuthor(cursor.getString(2));
+                a.setYear(cursor.getInt(3));
+                a.setDescription(cursor.getString(4));
+                a.setRoom(cursor.getInt(5));
+                a.setImage(cursor.getBlob(6));
+                a.setRating(cursor.getFloat(7));
+                a.setEdit(cursor.getInt(8));
+                // Add track to tracks
+                art.add(a);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("getAllTracks()", art.toString());
+
+        cursor.close();
+        // return art
+        return art;
+    }
+    public List<Artwork> getUnranked(){
+        List<Artwork> art = new LinkedList<Artwork>();
+        // 1. get reference to readable DB
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // 2. build query
+        Cursor cursor =
+                db.query(DB_TABLE, // a. table
+                        COLUMNS, // b. column names
+                        KEY_RATING+ " = ?", // c. selections
+                        new String[] { "0" }, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+        // 3. go over each row, build art and add it to list
+        Artwork a;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                a = new Artwork();
+                a.id = Integer.parseInt(cursor.getString(0));
+                a.setTitle(cursor.getString(1));
+                a.setAuthor(cursor.getString(2));
+                a.setYear(cursor.getInt(3));
+                a.setDescription(cursor.getString(4));
+                a.setRoom(cursor.getInt(5));
+                a.setImage(cursor.getBlob(6));
+                a.setRating(cursor.getFloat(7));
+                a.setEdit(cursor.getInt(8));
+                // Add track to tracks
+                art.add(a);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("getAllTracks()", art.toString());
+
+        cursor.close();
+        // return art
+        return art;
     }
 
     public Artwork getArtByTitle(String title){

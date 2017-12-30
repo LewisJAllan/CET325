@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +43,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     private CursorAdapter cursorAdapter = null;
     MySQLiteHelper db;
     ListView list;
+    List<Artwork> all;
     List<Artwork> Ranked;
     List<Artwork> Unranked;
     SQLiteDatabase database;
@@ -55,7 +57,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         cursorAdapter = new ArtCursorAdapter(this,null,0);
         list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
-
+        db = new MySQLiteHelper(this);
 
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -104,20 +106,27 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                         .show();
             }
         });
-
-//        cursor = database.query(MySQLiteHelper.DB_TABLE, MySQLiteHelper.COLUMNS, MySQLiteHelper.KEY_RATING + " > 0", null, null, null, null);
-//        db = new MySQLiteHelper(this);
-//        List<Artwork> AllArt = db.getAllArt();
-//        for(Artwork art : AllArt){
-//            if(art.getRating() > 0){
-//                cursor.moveToFirst();
-//                Ranked.add(art);
-//            }
-//            else{
-//                Unranked.add(art);
-//                Toast.makeText(this,"Testing..." + art.toString(),Toast.LENGTH_LONG).show();
-//            }
-//        }
+        try {
+            all = db.getAllArt();
+        }catch(NullPointerException e){
+            Toast.makeText(this,"No Data.",Toast.LENGTH_SHORT).show();
+            all = null;
+        }
+        try{
+            Ranked = db.getRanked();
+        }catch(NullPointerException e){
+            Toast.makeText(this,"No Ranked Data.",Toast.LENGTH_SHORT).show();
+            Ranked = null;
+        }
+        try{
+            Unranked = db.getUnranked();
+        }catch(NullPointerException e){
+            Toast.makeText(this,"No Unranked Data.",Toast.LENGTH_SHORT).show();
+            Unranked = null;
+        }
+        Toast.makeText(this,all.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,Unranked.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,Ranked.toString(),Toast.LENGTH_SHORT).show();
     }
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
