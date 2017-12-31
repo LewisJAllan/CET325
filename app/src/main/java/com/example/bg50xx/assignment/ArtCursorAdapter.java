@@ -80,9 +80,11 @@ public class ArtCursorAdapter extends CursorAdapter {
 
         Log.d("artTitle", title);
 //
-        ratingbar.setOnTouchListener(new RatingBar.OnTouchListener() {
+        ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onRatingChanged(RatingBar ratingBar,
+                                        float rating, boolean fromUser) {
                 //art = db.getArtByTitle(title);
 
                 String currentTitle = txtTitle.getText().toString();
@@ -93,14 +95,13 @@ public class ArtCursorAdapter extends CursorAdapter {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageInByte = baos.toByteArray();
-                float currentRating = ratingbar.getRating();
+                float currentRating = rating;
                 art = new Artwork(currentTitle,currentAuthor, "description",currentYear,currentRoom,imageInByte,currentRating, 1);
                 //art = db.getArtByTitle(txtTitle.getText().toString());
                 Log.d("artTitle", art.toString());
                 //art.setRating(test);
                 ratingbar.setRating(currentRating);
                 //db.updateArt(art);
-                return false;
             }
         });
 

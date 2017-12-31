@@ -57,7 +57,7 @@ public class Artwork {
     //getters & setters
     @Override
     public String toString() {
-        return "Artwork [id=" + id + ", title=" + getTitle() + ", author=" + getAuthor()
+        return "Artwork [rating=" + getRating() + ", title=" + getTitle() + ", author=" + getAuthor()
                 + ", year=" + getYear() + "]";
     }
 }
