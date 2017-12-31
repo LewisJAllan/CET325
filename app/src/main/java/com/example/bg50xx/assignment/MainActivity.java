@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         item.setVisible(false);
         MenuItem home = menu.findItem(R.id.action_home);
         home.setVisible(false);
+        MenuItem unrank = menu.findItem(R.id.action_unranked);
+        unrank.setVisible(false);
         return true;
     }
 

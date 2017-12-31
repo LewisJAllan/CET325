@@ -14,6 +14,11 @@
         android:orderInCategory="100"
         android:title="Ranked Exhibits"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_unranked"
+        android:orderInCategory="100"
+        android:title="Un-Ranked Exhibits"
+        app:showAsAction="never" />
     <item android:id="@+id/action_home"
         android:title="@string/Home"
         android:icon="@drawable/home"

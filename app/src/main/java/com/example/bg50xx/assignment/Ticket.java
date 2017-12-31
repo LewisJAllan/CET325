@@ -92,6 +92,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         getMenuInflater().inflate(R.menu.menu_menu, menu);
         MenuItem item = menu.findItem(R.id.action_ranked);
         item.setVisible(false);
+        MenuItem unrank = menu.findItem(R.id.action_unranked);
+        unrank.setVisible(false);
         MenuItem ticket = menu.findItem(R.id.action_ticket);
         ticket.setVisible(false);
         return true;

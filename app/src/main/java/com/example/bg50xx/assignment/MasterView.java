@@ -50,7 +50,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     List<Artwork> all;
     List<Artwork> Ranked;
     List<Artwork> Unranked;
-    SQLiteDatabase database;
     Cursor cursor;
     Artwork art;
     int selected;
@@ -162,6 +161,20 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
                 // make sure database is not empty, otherwise set the adapter to null
                 if(data == 0 || data < 1){
+                    list.setAdapter(null);
+                } else {
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+            case R.id.action_unranked:
+                String[] nought = new String[]{"0"};
+                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " = ?",nought,null, null);
+                Log.d("cursor", cursor.toString());
+                int tally = cursor.getCount();
+
+                // make sure database is not empty, otherwise set the adapter to null
+                if(tally == 0 || tally < 1){
                     list.setAdapter(null);
                 } else {
                     cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
