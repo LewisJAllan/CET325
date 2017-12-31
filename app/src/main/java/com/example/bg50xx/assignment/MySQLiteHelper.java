@@ -195,8 +195,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // 3. updating row
         int i = db.update(DB_TABLE, //table
                 values, // column/value
-                KEY_ID+" = ?", // selections
-                new String[] { String.valueOf(art.id) }); //selection args
+                KEY_TITLE + " = ?", // selections
+                new String[] { (art.getTitle()) }); //selection args
 
         // 4. close
         db.close();

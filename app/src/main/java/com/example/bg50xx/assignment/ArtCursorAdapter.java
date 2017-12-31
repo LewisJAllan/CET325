@@ -49,8 +49,9 @@ public class ArtCursorAdapter extends CursorAdapter {
 
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
+
         title = cursor.getString(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_TITLE));
         author = cursor.getString(
@@ -86,7 +87,7 @@ public class ArtCursorAdapter extends CursorAdapter {
             public void onRatingChanged(RatingBar ratingBar,
                                         float rating, boolean fromUser) {
                 //art = db.getArtByTitle(title);
-
+                db = new MySQLiteHelper(context);
                 String currentTitle = txtTitle.getText().toString();
                 String currentAuthor = txtAuthor.getText().toString();
                 int currentYear = Integer.parseInt(txtYear.getText().toString());
@@ -101,7 +102,7 @@ public class ArtCursorAdapter extends CursorAdapter {
                 Log.d("artTitle", art.toString());
                 //art.setRating(test);
                 ratingbar.setRating(currentRating);
-                //db.updateArt(art);
+                db.updateArt(art);
             }
         });
 
