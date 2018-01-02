@@ -103,10 +103,8 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_ranked);
+        MenuItem item = menu.findItem(R.id.action_order);
         item.setVisible(false);
-        MenuItem unrank = menu.findItem(R.id.action_unranked);
-        unrank.setVisible(false);
         return true;
     }
 

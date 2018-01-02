@@ -3,22 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
-
     <item
         android:id="@+id/action_gallery"
         android:orderInCategory="100"
         android:title="All Exhibits"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_ranked"
-        android:orderInCategory="100"
-        android:title="Ranked Exhibits"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_unranked"
-        android:orderInCategory="100"
-        android:title="Un-Ranked Exhibits"
-        app:showAsAction="never" />
+
+    <item android:id="@+id/action_order"
+        android:title="Order by"
+        android:orderInCategory="1"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/action_ranked"
+                android:title="Rating"
+                android:orderInCategory="1"/>
+
+            <item android:id="@+id/action_title"
+                android:title="Title"
+                android:orderInCategory="2"
+                />
+            <item android:id="@+id/action_author"
+                android:title="Title, Author"
+                android:orderInCategory="3"
+                />
+
+        </menu>
+    </item>
+
+
     <item android:id="@+id/action_home"
         android:title="@string/Home"
         android:icon="@drawable/home"

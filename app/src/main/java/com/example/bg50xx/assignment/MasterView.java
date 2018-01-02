@@ -52,6 +52,16 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     ListView list;
     Cursor cursor;
     Artwork art;
+    MySQLiteHelper orderDB;
+    SQLiteDatabase database;
+
+    String table;
+    String[] columns;
+    String groupBy;
+    String having;
+    String orderBy;
+    String where;
+    String[] selectionArgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +185,17 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent;
+        orderDB = new MySQLiteHelper(this);
+        database = orderDB.getReadableDatabase();
+
+        // Make sure table is immutable
+        table = MySQLiteHelper.DB_TABLE;
+        columns = new String[]{"*"};
+        groupBy = null;
+        having = null;
+        orderBy = null;
+        where = null;
+        selectionArgs = null;
 
         switch (item.getItemId()){
             case R.id.action_ticket:
@@ -188,29 +209,64 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.action_ranked:
-                String[] zero = new String[]{"0"};
-                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " > ?",zero,null, null);
-                Log.d("cursor", cursor.toString());
+                orderBy = orderDB.KEY_RATING + " desc";
+                cursor = database.query(
+                        table,
+                        columns,
+                        where,
+                        selectionArgs,
+                        groupBy,
+                        having,
+                        orderBy);
+
+                int result = cursor.getCount();
+
+                // make sure database is not empty, otherwise set the adapter to null
+                if(result == 0 || result < 1){
+                    list.setAdapter(null);
+                } else{
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+            case R.id.action_title:
+                orderBy = orderDB.KEY_TITLE + " ASC";
+                cursor = database.query(
+                        table,
+                        columns,
+                        where,
+                        selectionArgs,
+                        groupBy,
+                        having,
+                        orderBy);
+
                 int data = cursor.getCount();
 
                 // make sure database is not empty, otherwise set the adapter to null
                 if(data == 0 || data < 1){
                     list.setAdapter(null);
-                } else {
+                } else{
                     cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
                     list.setAdapter(cursorAdapter);
                 }
                 return true;
-            case R.id.action_unranked:
-                String[] nought = new String[]{"0"};
-                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " = ?",nought,null, null);
-                Log.d("cursor", cursor.toString());
+            case R.id.action_author:
+                orderBy = orderDB.KEY_TITLE + " ASC, " + orderDB.KEY_AUTHOR + " ASC";
+                cursor = database.query(
+                        table,
+                        columns,
+                        where,
+                        selectionArgs,
+                        groupBy,
+                        having,
+                        orderBy);
+
                 int tally = cursor.getCount();
 
                 // make sure database is not empty, otherwise set the adapter to null
                 if(tally == 0 || tally < 1){
                     list.setAdapter(null);
-                } else {
+                } else{
                     cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
                     list.setAdapter(cursorAdapter);
                 }
