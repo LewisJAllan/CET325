@@ -102,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             return true;
-//            case R.id.action_user:
-//                createUserDialog();
-//                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -33,7 +33,7 @@ public class ArtCursorAdapter extends CursorAdapter {
     MySQLiteHelper db;
     Artwork art;
     String title, description, author;
-    int year, room, edit;
+    int year, room, edit, id;
     float newrating;
     byte[] image;
 
@@ -51,6 +51,8 @@ public class ArtCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
+        id = cursor.getInt(
+                cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
         title = cursor.getString(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_TITLE));
         author = cursor.getString(
@@ -77,7 +79,8 @@ public class ArtCursorAdapter extends CursorAdapter {
         final ImageView pic = (ImageView) view.findViewById(R.id.imageDocIcon);
         final TextView txtDescription = (TextView) view.findViewById(R.id.txtDescription);
         final TextView txtEdit = (TextView) view.findViewById(R.id.txtEdit);
-        final Button btnEdit = (Button) view.findViewById(R.id.btnEdit);
+        final TextView txtID = (TextView) view.findViewById(R.id.txtID);
+        txtID.setText(String.valueOf(id));
         txtTitle.setText(title);
         txtAuthor.setText(author);
         txtYear.setText(String.valueOf(year));
@@ -95,6 +98,7 @@ public class ArtCursorAdapter extends CursorAdapter {
             public void onRatingChanged(RatingBar ratingBar,
                                         float rating, boolean fromUser) {
                 db = new MySQLiteHelper(context);
+                int currentID = Integer.parseInt(txtID.getText().toString());
                 String currentTitle = txtTitle.getText().toString();
                 String currentAuthor = txtAuthor.getText().toString();
                 String currentDescription = txtDescription.getText().toString();
@@ -107,6 +111,7 @@ public class ArtCursorAdapter extends CursorAdapter {
                 float currentRating = rating;
                 int currentEdit = Integer.parseInt(txtEdit.getText().toString());
                 art = new Artwork(currentTitle,currentAuthor, currentDescription,currentYear,currentRoom,imageInByte,currentRating, currentEdit);
+                art.id = currentID;
                 Log.d("artTitle", art.toString());
                 ratingbar.setRating(currentRating);
                 db.updateArt(art);

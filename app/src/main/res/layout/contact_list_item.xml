@@ -107,7 +107,6 @@
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnEdit"
         android:layout_toEndOf="@+id/ratingBar"
         android:visibility="invisible" />
 
@@ -117,6 +116,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView15"
         android:layout_toEndOf="@+id/txtDescription"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txtID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtEdit"
+        android:layout_toEndOf="@+id/textView15"
         android:visibility="invisible" />
 
 </RelativeLayout>

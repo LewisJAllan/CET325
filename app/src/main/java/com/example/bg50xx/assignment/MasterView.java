@@ -80,30 +80,41 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
             }
         });
 
-//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-//
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id){
-//
-//                LayoutInflater li = LayoutInflater.from(MasterView.this);
-//                View getDeleteDialog = li.inflate(R.layout.delete_gallery,nullParent);
-//
-//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MasterView.this);
-//                alertDialogBuilder.setView(getDeleteDialog);
-//
-//                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        dialog.dismiss();
-//                    }
-//                }).setPositiveButton("Delete", new DialogInterface.OnClickListener(){
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        deleteGallery(id, position);
-//                    }
-//                }).create().show();
-//                return true;
-//            }
-//
-//        });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, final long id){
+
+                LayoutInflater li = LayoutInflater.from(MasterView.this);
+                View getDeleteDialog = li.inflate(R.layout.dialog_delete, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MasterView.this);
+                alertDialogBuilder.setView(getDeleteDialog);
+
+                alertDialogBuilder
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                int adapterPosition = position - list.getHeaderViewsCount();
+                                Cursor cursor = (Cursor) cursorAdapter.getItem(adapterPosition);
+                                String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+                                art = db.getArt(Integer.parseInt(selected));
+                                art.id = Integer.parseInt(selected);
+                                Log.d("deleteArt", art.getTitle());
+                                if(art.getEdit() == 1) {
+                                    db.deleteArt(art);
+                                    Toast.makeText(view.getContext(), "Record deleted.", Toast.LENGTH_LONG).show();
+                                    restartLoader();
+                                }
+                                else {
+                                    Toast.makeText(view.getContext(), "Cannot delete this record.", Toast.LENGTH_LONG).show();
+                                }
+                    }
+                }).create().show();
+                return true;
+            }
+
+        });
 
 
         getLoaderManager().initLoader(0, null, this);
@@ -153,24 +164,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                         .show();
             }
         });
-        try {
-            all = db.getAllArt();
-        }catch(NullPointerException e){
-            Toast.makeText(this,"No Data.",Toast.LENGTH_SHORT).show();
-            all = null;
-        }
-        try{
-            Ranked = db.getRanked();
-        }catch(NullPointerException e){
-            Toast.makeText(this,"No Ranked Data.",Toast.LENGTH_SHORT).show();
-            Ranked = null;
-        }
-        try{
-            Unranked = db.getUnranked();
-        }catch(NullPointerException e){
-            Toast.makeText(this,"No Unranked Data.",Toast.LENGTH_SHORT).show();
-            Unranked = null;
-        }
+
     }
 
     @Override
@@ -235,17 +229,14 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                     list.setAdapter(cursorAdapter);
                 }
                 return true;
-//            case R.id.action_user:
-//                createUserDialog();
-//                return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
         db.addArt(art);
-        Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Created Artwork " + title + " " + edit,Toast.LENGTH_LONG).show();
     }
 
 

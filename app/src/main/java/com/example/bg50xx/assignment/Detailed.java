@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,10 +26,9 @@ import java.io.ByteArrayInputStream;
  * Created by Lewis on 02/01/2018.
  */
 
-public class Detailed extends AppCompatActivity {
+public class Detailed extends AppCompatActivity implements View.OnClickListener{
 
     private String ID;
-    boolean editable;
     EditText editTitle;
     RatingBar ratingBar;
     EditText editAuthor;
@@ -34,9 +36,7 @@ public class Detailed extends AppCompatActivity {
     EditText editRoom;
     EditText editYear;
     ImageView pic;
-    byte[] image;
-    final ViewGroup nullParent = null;
-    Cursor cursor;
+    Button btnUpdate;
     Artwork art;
 
     public String getID(){
@@ -46,14 +46,6 @@ public class Detailed extends AppCompatActivity {
     public void setID(String ID){
         this.ID = ID;
     }
-
-//    public float getRating(){
-//        return this.rating;
-//    }
-//
-//    public void setRating(float rating){
-//        this.rating = rating;
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +62,8 @@ public class Detailed extends AppCompatActivity {
         editDescription = (EditText) findViewById(R.id.editDetDescription);
         editRoom = (EditText) findViewById(R.id.editDetRoom);
         editYear = (EditText) findViewById(R.id.editDetYear);
+        btnUpdate = (Button) findViewById(R.id.btnDetUpdate);
+        btnUpdate.setOnClickListener(this);
         pic = (ImageView) findViewById(R.id.imgDetailed);
         art = db.getArt(Integer.parseInt(getID()));
         art.id = Integer.parseInt(getID());
@@ -84,14 +78,59 @@ public class Detailed extends AppCompatActivity {
         Bitmap picture = BitmapFactory.decodeStream(imageStream);
         pic.setImageBitmap(picture);
         editDescription.setText(art.getDescription());
-
-        editable = (art.getEdit() > 0 ? true : false);
-        if(!editable){
+        if(art.getEdit()==0){
             editTitle.setInputType(InputType.TYPE_NULL);
             editAuthor.setInputType(InputType.TYPE_NULL);
             editDescription.setInputType(InputType.TYPE_NULL);
             editYear.setInputType(InputType.TYPE_NULL);
             editRoom.setInputType(InputType.TYPE_NULL);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        MySQLiteHelper db = new MySQLiteHelper(this);
+        art.setRating(ratingBar.getRating());
+        art.setDescription(editDescription.getText().toString());
+        art.setTitle(editTitle.getText().toString());
+        art.setAuthor(editAuthor.getText().toString());
+        art.setYear(Integer.parseInt(editYear.getText().toString()));
+        art.setRoom(Integer.parseInt(editRoom.getText().toString()));
+        db.updateArt(art);
+        Toast.makeText(this, art.getTitle().toString() + " update",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_ranked);
+        item.setVisible(false);
+        MenuItem unrank = menu.findItem(R.id.action_unranked);
+        unrank.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent;
+
+        switch (item.getItemId()){
+            case R.id.action_ticket:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), Ticket.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            case R.id.action_home:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            case R.id.action_gallery:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MasterView.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

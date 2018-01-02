@@ -134,11 +134,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         }
         cursor.close();
-        // 5. return book
+        // 5. return art
         return art;
     }
 
-    // Get All Books
+    // Get All Art
     public List<Artwork> getAllArt() {
         List<Artwork> art = new LinkedList<Artwork>();
 
@@ -195,8 +195,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // 3. updating row
         int i = db.update(DB_TABLE, //table
                 values, // column/value
-                KEY_TITLE + " = ?", // selections
-                new String[] { (art.getTitle()) }); //selection args
+                KEY_ID + " = ?", // selections
+                new String[] { (String.valueOf(art.id)) }); //selection args
 
         // 4. close
         db.close();
