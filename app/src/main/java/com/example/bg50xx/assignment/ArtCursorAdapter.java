@@ -91,7 +91,7 @@ public class ArtCursorAdapter extends CursorAdapter {
         txtEdit.setText(String.valueOf(edit));
         ratingbar.setFocusable(false);
         Log.d("artTitle", title);
-//
+
         ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override

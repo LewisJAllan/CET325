@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -49,9 +50,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     private CursorAdapter cursorAdapter = null;
     MySQLiteHelper db;
     ListView list;
-    List<Artwork> all;
-    List<Artwork> Ranked;
-    List<Artwork> Unranked;
     Cursor cursor;
     Artwork art;
 
@@ -63,6 +61,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
         db = new MySQLiteHelper(this);
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
