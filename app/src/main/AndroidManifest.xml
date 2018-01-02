@@ -31,6 +31,10 @@
             android:label="Assignment">
         </activity>
         <activity
+            android:name=".Detailed"
+            android:label="Assignment">
+        </activity>
+        <activity
             android:name=".MasterView"
             android:label="Assignment">
         </activity>

@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.CursorAdapter;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,13 +32,9 @@ public class ArtCursorAdapter extends CursorAdapter {
     MySQLiteHelper db;
     Artwork art;
     String title, description, author;
-    int year, room;
+    int year, room, edit;
     float newrating;
     byte[] image;
-    static class ViewHolder{
-        RatingBar ratingBar1;
-
-    }
 
     public ArtCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -50,7 +49,6 @@ public class ArtCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
-        ViewHolder holder = (ViewHolder) view.getTag();
 
         title = cursor.getString(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_TITLE));
@@ -64,6 +62,10 @@ public class ArtCursorAdapter extends CursorAdapter {
                 cursor.getColumnIndex(MySQLiteHelper.KEY_RATING));
         image = cursor.getBlob(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_IMAGE));
+        edit = cursor.getInt(
+                cursor.getColumnIndex(MySQLiteHelper.KEY_EDIT));
+        description = cursor.getString(
+                cursor.getColumnIndex(MySQLiteHelper.KEY_DESCRIPTION));
         ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
         Bitmap picture = BitmapFactory.decodeStream(imageStream);
         final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
@@ -72,13 +74,17 @@ public class ArtCursorAdapter extends CursorAdapter {
         final TextView txtRoom = (TextView) view.findViewById(R.id.txtRoom);
         final RatingBar ratingbar = (RatingBar) view.findViewById(R.id.ratingBar);
         final ImageView pic = (ImageView) view.findViewById(R.id.imageDocIcon);
+        final TextView txtDescription = (TextView) view.findViewById(R.id.txtDescription);
+        final TextView txtEdit = (TextView) view.findViewById(R.id.txtEdit);
+        final Button btnEdit = (Button) view.findViewById(R.id.btnEdit);
         txtTitle.setText(title);
         txtAuthor.setText(author);
         txtYear.setText(String.valueOf(year));
         txtRoom.setText(String.valueOf(room));
         ratingbar.setRating(newrating);
         pic.setImageBitmap(picture);
-
+        txtDescription.setText(description);
+        txtEdit.setText(String.valueOf(edit));
         Log.d("artTitle", title);
 //
         ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -86,10 +92,10 @@ public class ArtCursorAdapter extends CursorAdapter {
             @Override
             public void onRatingChanged(RatingBar ratingBar,
                                         float rating, boolean fromUser) {
-                //art = db.getArtByTitle(title);
                 db = new MySQLiteHelper(context);
                 String currentTitle = txtTitle.getText().toString();
                 String currentAuthor = txtAuthor.getText().toString();
+                String currentDescription = txtDescription.getText().toString();
                 int currentYear = Integer.parseInt(txtYear.getText().toString());
                 int currentRoom = Integer.parseInt(txtRoom.getText().toString());
                 Bitmap bitmap = ((BitmapDrawable) pic.getDrawable()).getBitmap();
@@ -97,10 +103,9 @@ public class ArtCursorAdapter extends CursorAdapter {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageInByte = baos.toByteArray();
                 float currentRating = rating;
-                art = new Artwork(currentTitle,currentAuthor, "description",currentYear,currentRoom,imageInByte,currentRating, 1);
-                //art = db.getArtByTitle(txtTitle.getText().toString());
+                int currentEdit = Integer.parseInt(txtEdit.getText().toString());
+                art = new Artwork(currentTitle,currentAuthor, currentDescription,currentYear,currentRoom,imageInByte,currentRating, currentEdit);
                 Log.d("artTitle", art.toString());
-                //art.setRating(test);
                 ratingbar.setRating(currentRating);
                 db.updateArt(art);
             }

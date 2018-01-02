@@ -103,4 +103,20 @@
         android:layout_below="@+id/imageDocIcon"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnEdit"
+        android:layout_toEndOf="@+id/ratingBar"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txtEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
+        android:layout_toEndOf="@+id/txtDescription"
+        android:visibility="invisible" />
+
 </RelativeLayout>

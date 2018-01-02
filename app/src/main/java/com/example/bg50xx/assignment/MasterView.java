@@ -16,6 +16,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
@@ -63,6 +65,44 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list.setAdapter(cursorAdapter);
         db = new MySQLiteHelper(this);
         selected = 1;
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("Clicked", "Clicked item");
+                Cursor cursor = (Cursor) list.getItemAtPosition(i);
+                String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+
+                Intent detailIntent = new Intent(MasterView.this, Detailed.class);
+                detailIntent.putExtra("id", selected);
+                startActivity(detailIntent);
+            }
+        });
+
+//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+//
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id){
+//
+//                LayoutInflater li = LayoutInflater.from(MasterView.this);
+//                View getDeleteDialog = li.inflate(R.layout.delete_gallery,nullParent);
+//
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MasterView.this);
+//                alertDialogBuilder.setView(getDeleteDialog);
+//
+//                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        dialog.dismiss();
+//                    }
+//                }).setPositiveButton("Delete", new DialogInterface.OnClickListener(){
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        deleteGallery(id, position);
+//                    }
+//                }).create().show();
+//                return true;
+//            }
+//
+//        });
 
 
         getLoaderManager().initLoader(0, null, this);
@@ -200,6 +240,21 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    // Adapter listener
+//    AdapterView.OnItemClickListener clicked = new AdapterView.OnItemClickListener() {
+//        @Override
+//        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//            Cursor cursor = (Cursor) list.getItemAtPosition(i);
+//            String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+//
+//            Intent detailIntent = new Intent(view.getContext(), Detailed.class);
+//            detailIntent.putExtra("id", selected);
+//            startActivity(detailIntent);
+//
+//        }
+//    };
 
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
