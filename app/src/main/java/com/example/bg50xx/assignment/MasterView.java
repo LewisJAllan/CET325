@@ -54,7 +54,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     List<Artwork> Unranked;
     Cursor cursor;
     Artwork art;
-    int selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +63,17 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
         db = new MySQLiteHelper(this);
-        selected = 1;
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("Clicked", "Clicked item");
-                Cursor cursor = (Cursor) list.getItemAtPosition(i);
-                String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+                Toast.makeText(view.getContext(), "Item Clicked",Toast.LENGTH_LONG).show();
 
+                int adapterPosition = i - list.getHeaderViewsCount();
+                Log.d("Clicked", String.valueOf(adapterPosition));
+                Cursor cursor = (Cursor) cursorAdapter.getItem(adapterPosition);
+                String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+                Log.d("Clicked", selected);
                 Intent detailIntent = new Intent(MasterView.this, Detailed.class);
                 detailIntent.putExtra("id", selected);
                 startActivity(detailIntent);
@@ -240,22 +241,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    // Adapter listener
-//    AdapterView.OnItemClickListener clicked = new AdapterView.OnItemClickListener() {
-//        @Override
-//        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//            Cursor cursor = (Cursor) list.getItemAtPosition(i);
-//            String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
-//
-//            Intent detailIntent = new Intent(view.getContext(), Detailed.class);
-//            detailIntent.putExtra("id", selected);
-//            startActivity(detailIntent);
-//
-//        }
-//    };
-
+    
     private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
         db.addArt(art);
@@ -286,4 +272,5 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         // longer using it.
         cursorAdapter.swapCursor(null);
     }
+
 }
