@@ -77,14 +77,11 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(view.getContext(), "Item Clicked",Toast.LENGTH_LONG).show();
-
-                int adapterPosition = i - list.getHeaderViewsCount();
-                Log.d("Clicked", String.valueOf(adapterPosition));
-                Cursor cursor = (Cursor) cursorAdapter.getItem(adapterPosition);
-                String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
-                Log.d("Clicked", selected);
+                TextView tv = (TextView) view.findViewById(R.id.txtTitle);
+                String text = tv.getText().toString();
+                Log.d("Clicked", text);
                 Intent detailIntent = new Intent(MasterView.this, Detailed.class);
-                detailIntent.putExtra("id", selected);
+                detailIntent.putExtra("id", text);
                 startActivity(detailIntent);
             }
         });
@@ -130,7 +127,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 LayoutInflater li = LayoutInflater.from(MasterView.this);
                 View getEmpIdView = li.inflate(R.layout.dialog_get_art, null);
@@ -166,7 +163,10 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bitmapdata = stream.toByteArray();
-                                insertArt(title, author, year, description, room, rating, bitmapdata, 1);
+                                art = new Artwork(title, author, description, year, room, bitmapdata, rating, 1);
+                                db.addArt(art);
+                                Toast.makeText(view.getContext(),"Created Artwork " + title,Toast.LENGTH_LONG).show();
+                                db.close();
                                 restartLoader();
                             }
                         }).create()
@@ -199,11 +199,13 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
         switch (item.getItemId()){
             case R.id.action_ticket:
+                db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), Ticket.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.action_home:
+                db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -287,13 +289,6 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void insertArt(String title,String author, int year, String description, int room, float rating, byte[] bitmapdata, int edit) {
-        art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
-        db.addArt(art);
-        Toast.makeText(this,"Created Artwork " + title + " " + edit,Toast.LENGTH_LONG).show();
-    }
-
 
     private void restartLoader() {
         getLoaderManager().restartLoader(0,null,this);

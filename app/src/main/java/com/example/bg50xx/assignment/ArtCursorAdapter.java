@@ -49,7 +49,7 @@ public class ArtCursorAdapter extends CursorAdapter {
 
 
     @Override
-    public void bindView(View view, final Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
         id = cursor.getInt(
                 cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
@@ -115,6 +115,7 @@ public class ArtCursorAdapter extends CursorAdapter {
                 Log.d("artTitle", art.toString());
                 ratingbar.setRating(currentRating);
                 db.updateArt(art);
+                db.close();
             }
         });
 

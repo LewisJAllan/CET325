@@ -134,6 +134,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         }
         cursor.close();
+        db.close();
         // 5. return art
         return art;
     }
@@ -341,6 +342,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             Log.d("getArt(" + title + ")", art.toString());
         }
         cursor.close();
+        db.close();
         // 5. return track
         return art;
     }

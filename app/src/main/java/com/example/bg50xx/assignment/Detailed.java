@@ -38,6 +38,7 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
     ImageView pic;
     Button btnUpdate;
     Artwork art;
+    MySQLiteHelper db;
 
     public String getID(){
         return this.ID;
@@ -54,7 +55,7 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
         Intent intent = getIntent();
         setID(intent.getStringExtra("id"));
         Log.d("Deets",getID());
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        db = new MySQLiteHelper(this);
 
         ratingBar = (RatingBar) findViewById(R.id.ratingDetailed);
         editTitle = (EditText) findViewById(R.id.editDetTitle);
@@ -65,8 +66,7 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
         btnUpdate = (Button) findViewById(R.id.btnDetUpdate);
         btnUpdate.setOnClickListener(this);
         pic = (ImageView) findViewById(R.id.imgDetailed);
-        art = db.getArt(Integer.parseInt(getID()));
-        art.id = Integer.parseInt(getID());
+        art = db.getArtByTitle(getID());
         Log.d("Artwork", art.toString());
 
         editTitle.setText(art.getTitle());
@@ -89,15 +89,20 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        MySQLiteHelper db1 = new MySQLiteHelper(this);
         art.setRating(ratingBar.getRating());
         art.setDescription(editDescription.getText().toString());
         art.setTitle(editTitle.getText().toString());
         art.setAuthor(editAuthor.getText().toString());
         art.setYear(Integer.parseInt(editYear.getText().toString()));
         art.setRoom(Integer.parseInt(editRoom.getText().toString()));
-        db.updateArt(art);
+        db1.updateArt(art);
+        db1.close();
+        db.close();
         Toast.makeText(this, art.getTitle().toString() + " update",Toast.LENGTH_LONG).show();
+        Intent myIntent = new Intent(this.getApplication().getApplicationContext(), MasterView.class);
+        startActivity(myIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -114,16 +119,19 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
 
         switch (item.getItemId()){
             case R.id.action_ticket:
+                db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), Ticket.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.action_home:
+                db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.action_gallery:
+                db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), MasterView.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

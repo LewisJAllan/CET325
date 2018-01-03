@@ -18,14 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
     Artwork art;
     MySQLiteHelper db;
+    int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new MySQLiteHelper(this);
+        id = 1;
 
         if(getContentResolver().query(ArtworkProvider.CONTENT_URI, null, null, null, null).getCount() == 0){
-            Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Populating data...", Toast.LENGTH_SHORT).show();
             //One
             insertpic("trex", "T-Rex", "Dinosaur", 30000000, "Dinosaur exhibition", 1, 0, 0);
             //Two
@@ -55,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
             String description10 = "Every creepy crawly we have information about, or lack of!";
             insertpic("ants","Creepy Crawlies", "Bug's Life", 2018, description10, 10, 0, 0);
         }
-        else{
-            Toast.makeText(this, "Not empty", Toast.LENGTH_SHORT).show();
-        }
+//        else{
+//            Toast.makeText(this, "Not empty", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
@@ -70,9 +72,12 @@ public class MainActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bitmapdata = stream.toByteArray();
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
+        art.id = id;
+        id++;
         db.addArt(art);
+        db.close();
 
-        Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Created Artwork " + title,Toast.LENGTH_LONG).show();
     }
 
     @Override

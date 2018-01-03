@@ -5,9 +5,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8sp"
-        android:layout_marginLeft="8sp">
+        android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textView6"
@@ -19,13 +17,13 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/imgDetailed"
-        android:layout_width="396dp"
-        android:layout_height="233dp"
-        android:scaleType="fitCenter" />
+        <ImageView
+            android:id="@+id/imgDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="233dp"
+            android:scaleType="fitCenter" />
 
-    <EditText
+        <EditText
         android:id="@+id/editDetTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
