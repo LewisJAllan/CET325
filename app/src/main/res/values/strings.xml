@@ -10,4 +10,5 @@
         <li>More than 80 million specimens</li>\n
         <li>More than 5 millions visitors annually</li>
     </string>
+    <string name="title_activity_maps">Map</string>
 </resources>

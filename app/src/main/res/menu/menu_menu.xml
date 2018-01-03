@@ -9,6 +9,7 @@
         android:title="All Exhibits"
         app:showAsAction="never" />
 
+
     <item android:id="@+id/action_order"
         android:title="Order by"
         android:orderInCategory="1"
@@ -29,6 +30,11 @@
 
         </menu>
     </item>
+    <item android:id="@+id/action_map"
+        android:title="Find Us"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
 
 
     <item android:id="@+id/action_home"
