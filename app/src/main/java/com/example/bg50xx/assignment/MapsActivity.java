@@ -1,17 +1,23 @@
 package com.example.bg50xx.assignment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
 
@@ -40,11 +46,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 
         // Add a marker in Sydney and move the camera
         LatLng nhm = new LatLng(51.495915, -0.176366);
-        mMap.addMarker(new MarkerOptions().position(nhm).title("Natural History Museum"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(nhm));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        LatLng southkentube = new LatLng(51.494144, -0.173929);
+        LatLng gloucestertube = new LatLng(51.494463, -0.182911);
+        LatLng thaisquare = new LatLng(51.495280, -0.173654);
+        LatLng fernandezwells = new LatLng (51.494984, -0.173264);
+        LatLng honestburgers = new LatLng (51.494417, -0.173550);
+        Marker m0 = mMap.addMarker(new MarkerOptions().position(nhm).title("Natural History Museum").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        Marker m1 =mMap.addMarker(new MarkerOptions().position(southkentube).title("South Kensington Underground station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
+        Marker m2 =mMap.addMarker(new MarkerOptions().position(gloucestertube).title("Gloucester Road Underground station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
+        Marker m3 =mMap.addMarker(new MarkerOptions().position(thaisquare).title("Thai Square Restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        Marker m4 =mMap.addMarker(new MarkerOptions().position(fernandezwells).title("Fernandez & Wells restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        Marker m5 =mMap.addMarker(new MarkerOptions().position(honestburgers).title("Honest burgers").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(nhm));// Set a listener for marker click.
+        mMap.setOnMarkerClickListener(this);
+        m0.setTag(0);
+        m1.setTag(0);
+        m2.setTag(0);
+        m3.setTag(0);
+        m4.setTag(0);
+        m5.setTag(0);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+        String clicked = marker.getId();
+        Log.d("marker", clicked);
+
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+            Log.d("marker", clickCount.toString());
+        }
+        else if(clickCount > 1){
+            if (clicked.equals("m0")){
+                Uri link = Uri.parse("http://www.nhm.ac.uk");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, link);
+                startActivity(browserIntent);
+            }
+        }
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
     }
 }
