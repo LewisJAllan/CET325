@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,9 +19,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, View.OnClickListener {
 
     private GoogleMap mMap;
+    ImageButton home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        home = (ImageButton) findViewById(R.id.imgHome);
+        home.setOnClickListener(this);
     }
 
 
@@ -55,12 +60,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng thaisquare = new LatLng(51.495280, -0.173654);
         LatLng fernandezwells = new LatLng (51.494984, -0.173264);
         LatLng honestburgers = new LatLng (51.494417, -0.173550);
-        Marker m0 = mMap.addMarker(new MarkerOptions().position(nhm).title("Natural History Museum").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        Marker m1 =mMap.addMarker(new MarkerOptions().position(southkentube).title("South Kensington Underground station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
-        Marker m2 =mMap.addMarker(new MarkerOptions().position(gloucestertube).title("Gloucester Road Underground station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
-        Marker m3 =mMap.addMarker(new MarkerOptions().position(thaisquare).title("Thai Square Restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
-        Marker m4 =mMap.addMarker(new MarkerOptions().position(fernandezwells).title("Fernandez & Wells restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
-        Marker m5 =mMap.addMarker(new MarkerOptions().position(honestburgers).title("Honest burgers").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        Marker m0 = mMap.addMarker(new MarkerOptions().position(nhm).title("click to go to official Natural History Museum website").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        Marker m1 =mMap.addMarker(new MarkerOptions().position(southkentube).title("find underground times for South Kensington station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
+        Marker m2 =mMap.addMarker(new MarkerOptions().position(gloucestertube).title("find underground times for Gloucester Road station").icon(BitmapDescriptorFactory.fromResource(R.drawable.tube)));
+        Marker m3 =mMap.addMarker(new MarkerOptions().position(thaisquare).title("Book a table @ Thai Square Restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        Marker m4 =mMap.addMarker(new MarkerOptions().position(fernandezwells).title("Book a table @ Fernandez & Wells restaurant").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
+        Marker m5 =mMap.addMarker(new MarkerOptions().position(honestburgers).title("Book a table @ Honest burgers").icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nhm));// Set a listener for marker click.
         mMap.setOnMarkerClickListener(this);
         m0.setTag(0);
@@ -85,9 +90,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker.setTag(clickCount);
             Log.d("marker", clickCount.toString());
         }
-        else if(clickCount > 1){
+        if(clickCount > 1){
             if (clicked.equals("m0")){
+                Log.d("marker", "Working");
                 Uri link = Uri.parse("http://www.nhm.ac.uk");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, link);
+                startActivity(browserIntent);
+            }
+            if(clicked.equals("m1") || clicked.equals("m2")){
+                Log.d("marker", "Working");
+                Uri link = Uri.parse("https://tfl.gov.uk/modes/tube/");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, link);
+                startActivity(browserIntent);
+            }
+            if(clicked.equals("m3") || clicked.equals("m4") || clicked.equals("m5")){
+                Log.d("marker", "Working");
+                Uri link = Uri.parse("https://www.bookatable.co.uk/london-kensington-restaurants");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, link);
                 startActivity(browserIntent);
             }
@@ -97,5 +115,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
+        startActivity(myIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }
