@@ -181,8 +181,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="21dp"
         android:ems="10"
+        android:hint="Adult price"
         android:inputType="numberDecimal"
-        android:text="Adult Price"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPass"
@@ -197,8 +197,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="35dp"
         android:ems="10"
+        android:hint="Child price"
         android:inputType="numberDecimal"
-        android:text="Child Price"
         app:layout_constraintBottom_toBottomOf="@+id/editAdult"
         app:layout_constraintHorizontal_bias="0.216"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -212,12 +212,12 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Student discount"
         android:inputType="number"
-        android:text="Student Discount"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/editChild"
         app:layout_constraintTop_toBottomOf="@+id/editChild"
-        app:layout_constraintVertical_bias="0.103"
-        app:layout_constraintRight_toRightOf="@+id/editChild" />
+        app:layout_constraintVertical_bias="0.103" />
 
     <Button
         android:id="@+id/btnPrice"

@@ -136,6 +136,11 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
+            case R.id.action_map:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MapsActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -53,7 +53,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         btnPrice = (Button) findViewById(R.id.btnPrice);
         btnPrice.setOnClickListener(this);
         adult = 10.00;
-        child = 5.00;
+        child = 0.00;
         discount = 0.3;
 
         JSONCurrencyTask task = new JSONCurrencyTask();
@@ -131,6 +131,11 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
+            case R.id.action_map:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MapsActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -179,7 +184,10 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
                 }
                 return cur;
             }
-            else return null;
+            else {
+                cur.setRate(1.13f);
+                return cur;
+            }
         }
 
         @Override
@@ -187,6 +195,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
             super.onPostExecute(cur);
             if (cur ==null) {
                 Toast.makeText(getApplicationContext(),"Unable to retrieve data",Toast.LENGTH_LONG).show();
+                cur.setRate(1.13f);
             }
         }
     }

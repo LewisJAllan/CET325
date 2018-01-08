@@ -15,7 +15,7 @@
         android:orderInCategory="1"
         app:showAsAction="never">
         <menu>
-            <item android:id="@+id/action_ranked"
+            <item android:id="@+id/action_rating"
                 android:title="Rating"
                 android:orderInCategory="1"/>
 
@@ -26,6 +26,14 @@
             <item android:id="@+id/action_author"
                 android:title="Title, Author"
                 android:orderInCategory="3"
+                />
+            <item android:id="@+id/action_ranked"
+                android:title="Ranked Exhibits"
+                android:orderInCategory="4"
+                />
+            <item android:id="@+id/action_unranked"
+                android:title="Unranked Exhibits"
+                android:orderInCategory="5"
                 />
 
         </menu>

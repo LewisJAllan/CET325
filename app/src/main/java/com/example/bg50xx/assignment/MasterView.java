@@ -204,13 +204,18 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
+            case R.id.action_map:
+                myIntent = new Intent(this.getApplication().getApplicationContext(), MapsActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
             case R.id.action_home:
                 db.close();
                 myIntent = new Intent(this.getApplication().getApplicationContext(), MainActivity.class);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
-            case R.id.action_ranked:
+            case R.id.action_rating:
                 orderBy = orderDB.KEY_RATING + " desc";
                 cursor = database.query(
                         table,
@@ -280,6 +285,32 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
                 // make sure database is not empty, otherwise set the adapter to null
                 if(alld== 0 || alld < 1){
+                    list.setAdapter(null);
+                } else {
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+            case R.id.action_ranked:
+                String[] zero = new String[]{"0"};
+                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " > ?",zero,null, null);
+                Log.d("cursor", cursor.toString());
+                int rank = cursor.getCount();
+                // make sure database is not empty, otherwise set the adapter to null
+                if(rank == 0 || rank < 1){
+                    list.setAdapter(null);
+                } else {
+                    cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
+                    list.setAdapter(cursorAdapter);
+                }
+                return true;
+            case R.id.action_unranked:
+                String[] nought = new String[]{"0"};
+                cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " = ?",nought,null, null);
+                Log.d("cursor", cursor.toString());
+                int unrank = cursor.getCount();
+                // make sure database is not empty, otherwise set the adapter to null
+                if(unrank == 0 || unrank < 1){
                     list.setAdapter(null);
                 } else {
                     cursorAdapter = new ArtCursorAdapter(this, cursor, 0);
