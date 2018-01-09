@@ -17,7 +17,7 @@ import android.util.Log;
  */
 
 public class ArtworkProvider extends ContentProvider {
-
+    //build the values and variables for database connection path
     private static final String AUTHORITY = "com.example.bg50xx.assignment";
     private static final String BASE_PATH = "artwork";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
@@ -34,16 +34,19 @@ public class ArtworkProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        //get a writeable database connection
         MySQLiteHelper helper = new MySQLiteHelper(getContext());
         database = helper.getWritableDatabase();
         return true;
     }
 
+    //build query to pull data from the database
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionargs, String sortorder) {
         Cursor cursor;
         Log.d("uri", uri.toString());
+        //if uri has been found match the uri case
         switch (uriMatcher.match(uri)) {
             case ART:
                 cursor =  database.query(MySQLiteHelper.DB_TABLE,MySQLiteHelper.COLUMNS, selection,selectionargs,
@@ -56,7 +59,7 @@ public class ArtworkProvider extends ContentProvider {
 
         return cursor;
     }
-
+    //retrieve type of database value
     @Nullable
     @Override
     public String getType(Uri uri) {
@@ -69,7 +72,7 @@ public class ArtworkProvider extends ContentProvider {
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
         }
     }
-
+    //connection to database to pass in new values
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -83,7 +86,7 @@ public class ArtworkProvider extends ContentProvider {
         throw new SQLException("Insertion Failed for URI :" + uri);
 
     }
-
+    //delete entry from the database
     @Override
     public int delete(Uri uri, String s, String[] strings) {
         int delCount = 0;
@@ -97,7 +100,7 @@ public class ArtworkProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return delCount;
     }
-
+    //update a database entry with new values
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         int updCount = 0;

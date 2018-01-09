@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity {
-
+    //Initialize variables
     Artwork art;
     MySQLiteHelper db;
     int id;
@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //create database connection
         db = new MySQLiteHelper(this);
         id = 1;
-
+        //check if the database is empty (first run) and if true, populate with data
         if(getContentResolver().query(ArtworkProvider.CONTENT_URI, null, null, null, null).getCount() == 0){
             Toast.makeText(this, "Populating data...", Toast.LENGTH_SHORT).show();
             //One
@@ -57,12 +58,9 @@ public class MainActivity extends AppCompatActivity {
             String description10 = "Every creepy crawly we have information about, or lack of!";
             insertpic("ants","Creepy Crawlies", "Bug's Life", 2018, description10, 10, 0, 0);
         }
-//        else{
-//            Toast.makeText(this, "Not empty", Toast.LENGTH_SHORT).show();
-//        }
-
     }
-
+    //method to prevent repeated information for the insertion of the picture to the database as this is quite large
+    //once the image data is established, add information to an Artwork object
     private void insertpic(String pic, String title,String author, int year, String description, int room, float rating, int edit){
         Drawable drawable = getResources().getDrawable(getResources()
                 .getIdentifier(pic, "drawable", getPackageName()));
@@ -74,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         art = new Artwork(title, author, description, year, room, bitmapdata, rating, edit);
         art.id = id;
         id++;
+        //pass the object to the database and then close the connection
         db.addArt(art);
         db.close();
 

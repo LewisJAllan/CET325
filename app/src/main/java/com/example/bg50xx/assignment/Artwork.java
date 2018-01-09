@@ -10,6 +10,7 @@ import java.sql.Blob;
  */
 
 public class Artwork {
+    //members of the class
     public int id;
     private String author;
     private String description;
@@ -19,7 +20,7 @@ public class Artwork {
     private byte[] image;
     private float rating;
     private int edit;
-
+    //getters and setters
     public String getAuthor() {return author;}
     public void setAuthor(String author) {this.author = author;}
 

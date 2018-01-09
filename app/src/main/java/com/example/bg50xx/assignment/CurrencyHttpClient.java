@@ -13,8 +13,9 @@ import java.net.URL;
  */
 
 public class CurrencyHttpClient {
+    //API url string
     private static String BASE_URL = "https://api.fixer.io/latest?base=GBP";
-
+    //getter for retreiving data from the url
     public String getCurrencyData() {
         HttpURLConnection con = null ;
         InputStream is = null;
@@ -28,13 +29,10 @@ public class CurrencyHttpClient {
         catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        //check connection has been established or catch the exception otherwise
         try {
             con = (HttpURLConnection) (new URL(urlString)).openConnection();
             con.setRequestMethod("GET");
-            // con.setDoInput(true);
-            // con.setDoOutput(true);
             con.connect();
 
             int response = con.getResponseCode();
@@ -63,6 +61,7 @@ public class CurrencyHttpClient {
         catch(Exception e) {
             e.printStackTrace();
         }
+        //whether connection or not, close and disconnect
         finally {
             try { is.close(); } catch(Exception e) {}
             try { con.disconnect(); } catch(Exception e) {}

@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, View.OnClickListener {
-
+    //Initialize variables
     private GoogleMap mMap;
     ImageButton home;
 
@@ -32,6 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //set up the imageButton for navigation
         home = (ImageButton) findViewById(R.id.imgHome);
         home.setOnClickListener(this);
     }
@@ -53,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker for Natural History museum and move the camera
         LatLng nhm = new LatLng(51.495915, -0.176366);
         LatLng southkentube = new LatLng(51.494144, -0.173929);
         LatLng gloucestertube = new LatLng(51.494463, -0.182911);
@@ -90,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker.setTag(clickCount);
             Log.d("marker", clickCount.toString());
         }
+        //if clickcount is greater than one, open relevant browser window
         if(clickCount > 1){
             if (clicked.equals("m0")){
                 Log.d("marker", "Working");

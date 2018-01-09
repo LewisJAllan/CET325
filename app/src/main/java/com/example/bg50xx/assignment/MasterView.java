@@ -46,7 +46,7 @@ import java.util.List;
  */
 
 public class MasterView extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
+    //initialize variables globally
     private CursorAdapter cursorAdapter = null;
     MySQLiteHelper db;
     ListView list;
@@ -54,7 +54,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     Artwork art;
     MySQLiteHelper orderDB;
     SQLiteDatabase database;
-
+    //errors when running ArtworkProvider query, variables for creating new query for ordering list
     String table;
     String[] columns;
     String groupBy;
@@ -67,12 +67,13 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_masterview);
+        //create adapter for pulling all database information to populate list
         cursorAdapter = new ArtCursorAdapter(this,null,0);
         list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
+        //open database connection
         db = new MySQLiteHelper(this);
-
-
+        //when list item is clicked, view detailed database entry
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,12 +81,13 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                 TextView tv = (TextView) view.findViewById(R.id.txtTitle);
                 String text = tv.getText().toString();
                 Log.d("Clicked", text);
+                //pass the Title to find the database entry to populate the activity
                 Intent detailIntent = new Intent(MasterView.this, Detailed.class);
                 detailIntent.putExtra("id", text);
                 startActivity(detailIntent);
             }
         });
-
+        //when list item is pressed longer, open dialog box to delete selected entry
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
 
             @Override
@@ -93,7 +95,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
                 LayoutInflater li = LayoutInflater.from(MasterView.this);
                 View getDeleteDialog = li.inflate(R.layout.dialog_delete, null);
-
+                //open delete dialog box
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MasterView.this);
                 alertDialogBuilder.setView(getDeleteDialog);
 
@@ -104,9 +106,11 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 int adapterPosition = position - list.getHeaderViewsCount();
                                 Cursor cursor = (Cursor) cursorAdapter.getItem(adapterPosition);
                                 String selected = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_ID));
+                                //get the Artwork object for selected entry
                                 art = db.getArt(Integer.parseInt(selected));
                                 art.id = Integer.parseInt(selected);
                                 Log.d("deleteArt", art.getTitle());
+                                //only delete user created entries
                                 if(art.getEdit() == 1) {
                                     db.deleteArt(art);
                                     Toast.makeText(view.getContext(), "Record deleted.", Toast.LENGTH_LONG).show();
@@ -122,7 +126,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
         });
 
-
+        //Adding a new user created entry
         getLoaderManager().initLoader(0, null, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -131,11 +135,11 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
 
                 LayoutInflater li = LayoutInflater.from(MasterView.this);
                 View getEmpIdView = li.inflate(R.layout.dialog_get_art, null);
-
+                //open dialog box for adding a new entry
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MasterView.this);
                 // set dialog_get_art.xml to alertdialog builder
                 alertDialogBuilder.setView(getEmpIdView);
-
+                //retieve instruments for user interaction
                 final EditText titleInput = (EditText) getEmpIdView.findViewById(R.id.dialogTitle);
                 final EditText authorInput = (EditText) getEmpIdView.findViewById(R.id.dialogAuthor);
                 final EditText yearInput = (EditText) getEmpIdView.findViewById(R.id.dialogYear);
@@ -163,10 +167,12 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bitmapdata = stream.toByteArray();
+                                //creae Artwork object to easily pass to the database to update then close connection
                                 art = new Artwork(title, author, description, year, room, bitmapdata, rating, 1);
                                 db.addArt(art);
                                 Toast.makeText(view.getContext(),"Created Artwork " + title,Toast.LENGTH_LONG).show();
                                 db.close();
+                                //refresh the list to pull the new data entry with the others
                                 restartLoader();
                             }
                         }).create()
@@ -197,6 +203,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         where = null;
         selectionArgs = null;
 
+        //go to the selected activity or run  the relevant database query for ordering the list view
         switch (item.getItemId()){
             case R.id.action_ticket:
                 db.close();
@@ -291,6 +298,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
                     list.setAdapter(cursorAdapter);
                 }
                 return true;
+            //Ranked and Unranked can succesfully run the Artwork Provider query
             case R.id.action_ranked:
                 String[] zero = new String[]{"0"};
                 cursor = getContentResolver().query(ArtworkProvider.CONTENT_URI,null,MySQLiteHelper.KEY_RATING + " > ?",zero,null, null);
@@ -321,6 +329,7 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         return super.onOptionsItemSelected(item);
     }
 
+    //refresh the list with the latest database
     private void restartLoader() {
         getLoaderManager().restartLoader(0,null,this);
     }
@@ -344,5 +353,4 @@ public class MasterView extends AppCompatActivity implements LoaderManager.Loade
         // longer using it.
         cursorAdapter.swapCursor(null);
     }
-
 }

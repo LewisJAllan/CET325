@@ -8,6 +8,8 @@ import org.json.JSONObject;
  */
 
 public class JSONCurrencyParser {
+    //parse the data from the API and get the values to which can be saved to the
+    //Currency class
 
     public static Currency getCurrency(String data) throws JSONException {
         Currency cur = new Currency();

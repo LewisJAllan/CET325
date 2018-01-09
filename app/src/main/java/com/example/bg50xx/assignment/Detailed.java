@@ -27,7 +27,7 @@ import java.io.ByteArrayInputStream;
  */
 
 public class Detailed extends AppCompatActivity implements View.OnClickListener{
-
+    //initialize globally tools and variables for the activity
     private String ID;
     EditText editTitle;
     RatingBar ratingBar;
@@ -39,7 +39,7 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
     Button btnUpdate;
     Artwork art;
     MySQLiteHelper db;
-
+    //getter and setter for passed parameter of previous activity
     public String getID(){
         return this.ID;
     }
@@ -52,11 +52,13 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
+        //retrieved the passed data from previous activity
         Intent intent = getIntent();
         setID(intent.getStringExtra("id"));
         Log.d("Deets",getID());
+        //open database connection to this activity
         db = new MySQLiteHelper(this);
-
+        //give tools a variable name from layout
         ratingBar = (RatingBar) findViewById(R.id.ratingDetailed);
         editTitle = (EditText) findViewById(R.id.editDetTitle);
         editAuthor = (EditText) findViewById(R.id.editDetAuthor);
@@ -66,9 +68,10 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
         btnUpdate = (Button) findViewById(R.id.btnDetUpdate);
         btnUpdate.setOnClickListener(this);
         pic = (ImageView) findViewById(R.id.imgDetailed);
+        //create an Artwork object from database using the passed ID from previous activity
         art = db.getArtByTitle(getID());
         Log.d("Artwork", art.toString());
-
+        //set the values of the layout based on the Artwork object values
         editTitle.setText(art.getTitle());
         editAuthor.setText(art.getAuthor());
         editYear.setText(String.valueOf(art.getYear()));
@@ -78,6 +81,7 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
         Bitmap picture = BitmapFactory.decodeStream(imageStream);
         pic.setImageBitmap(picture);
         editDescription.setText(art.getDescription());
+        //Check to see if this is a preloaded entry and a user created entry
         if(art.getEdit()==0){
             editTitle.setInputType(InputType.TYPE_NULL);
             editAuthor.setInputType(InputType.TYPE_NULL);
@@ -89,17 +93,21 @@ public class Detailed extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+        //create a database conenction to pass new information back
         MySQLiteHelper db1 = new MySQLiteHelper(this);
+        //update the Artwork class
         art.setRating(ratingBar.getRating());
         art.setDescription(editDescription.getText().toString());
         art.setTitle(editTitle.getText().toString());
         art.setAuthor(editAuthor.getText().toString());
         art.setYear(Integer.parseInt(editYear.getText().toString()));
         art.setRoom(Integer.parseInt(editRoom.getText().toString()));
+        //update the database and close connections
         db1.updateArt(art);
         db1.close();
         db.close();
         Toast.makeText(this, art.getTitle().toString() + " update",Toast.LENGTH_LONG).show();
+        //confirm the update and move back to the List view activity
         Intent myIntent = new Intent(this.getApplication().getApplicationContext(), MasterView.class);
         startActivity(myIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

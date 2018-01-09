@@ -140,6 +140,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Get All Art
+    //Not used in prototype
     public List<Artwork> getAllArt() {
         List<Artwork> art = new LinkedList<Artwork>();
 
@@ -223,7 +224,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.d("deleteArt", art.toString());
 
     }
-
+    //alternative method for pulling Ranked data
+    //not used in prototype
     public List<Artwork> getRanked(){
         List<Artwork> art = new LinkedList<Artwork>();
         // 1. get reference to readable DB
@@ -265,6 +267,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // return art
         return art;
     }
+    //alternative method for pulling unranked data
+    //not used in prototype
     public List<Artwork> getUnranked(){
         List<Artwork> art = new LinkedList<Artwork>();
         // 1. get reference to readable DB
@@ -306,7 +310,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // return art
         return art;
     }
-
+    //alternate method for getting a database entry
     public Artwork getArtByTitle(String title){
 
         // 1. get reference to readable DB
@@ -348,6 +352,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Getting artwork Count
+    //not used in prototype
     public int getArtworkCount() {
         String countQuery = "SELECT  * FROM " + DB_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();

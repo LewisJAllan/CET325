@@ -8,8 +8,10 @@ import java.io.Serializable;
 
 public class Currency implements Serializable {
 
+    //class to store the rate pulled from the JSON file or predefined on no connection
+    //variable
     private float rate;
-
+    //getter and setter
     public float getRate() {
         return rate;
     }

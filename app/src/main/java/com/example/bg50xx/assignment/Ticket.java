@@ -24,7 +24,7 @@ import java.text.DecimalFormat;
  */
 
 public class Ticket extends AppCompatActivity implements View.OnClickListener{
-
+    //globally initialize variables
     TextView txtAdult, txtStudent, txtChild;
     double adult, child, discount;
     DecimalFormat df;
@@ -38,7 +38,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
-
+        //link variables to layout instruments
         txtAdult = (TextView) findViewById(R.id.txtAdult);
         txtStudent = (TextView) findViewById(R.id.txtStudent);
         txtChild = (TextView) findViewById(R.id.txtChild);
@@ -52,12 +52,15 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         btnEuro.setOnClickListener(this);
         btnPrice = (Button) findViewById(R.id.btnPrice);
         btnPrice.setOnClickListener(this);
+        //set the english values
         adult = 10.00;
         child = 0.00;
         discount = 0.3;
 
+        //connect to API
         JSONCurrencyTask task = new JSONCurrencyTask();
         task.execute(new String[]{""});
+        //Sleep for 1.5 seconds while trying to retrieve data
         Thread thread = new Thread();
         try {
             thread.run();
@@ -72,6 +75,8 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void loadPreferences(){
+        //check to see if the user has altered prices
+        //check to see which currency to show
         myPreferences = getPreferences(Context.MODE_PRIVATE);
         String Pref = myPreferences.getString("Currency", "");
         Log.d("pref", Pref);
@@ -96,7 +101,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         ticket.setVisible(false);
         return true;
     }
-
+    //set the vlaues to GBP currency prices
     public void GBP(double adult, double child){
         df = new DecimalFormat("'£'0.00");
         txtAdult.setText(df.format(adult));
@@ -105,7 +110,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
         btnGBP.setVisibility(View.INVISIBLE);
         btnEuro.setVisibility((View.VISIBLE));
     }
-
+    //convert prices and set Text values to EUR currency costs
     public void EUR(float rate){
         df = new DecimalFormat("'€'0.00");
         txtAdult.setText(df.format((adult*rate)));
@@ -143,19 +148,21 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
+        //update preferences and chance to GBP currency
         if (id == R.id.btnGBP) {
             GBP(adult, child);
             editor = myPreferences.edit();
             editor.putString("Currency", "GBP");
             editor.commit();
         }
+        //update preferences and change cost to EUR
         if (id == R.id.btnEuro) {
             EUR(cur.getRate());
             editor = myPreferences.edit();
             editor.putString("Currency", "EUR");
             editor.commit();
         }
+        //update user entered values if password is correct, else inform user of incorrect password
         if (id == R.id.btnPrice) {
             if(editPass.getText().toString().equals("admin")){
                 adult = Double.parseDouble(editAdult.getText().toString());
@@ -170,7 +177,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
     }
 
     private class JSONCurrencyTask extends AsyncTask<String, Void, Currency> {
-
+        //retrieve currency exchange rate
         @Override
         protected Currency doInBackground(String... params) {
             Log.d("data", params[0]);
@@ -184,6 +191,7 @@ public class Ticket extends AppCompatActivity implements View.OnClickListener{
                 }
                 return cur;
             }
+            //if no connection, then set predefined exchange rate to 1.13 Eur for 1 GBP
             else {
                 cur.setRate(1.13f);
                 return cur;
